@@ -13,12 +13,11 @@ The course develops the ability to evaluate software and hardware components usi
 | Section | Use |
 |---|---|
 | Course Guide | General information, assessments, tools, and policies. |
-| Sessions | Preparation pages, objectives, important concepts, and links to laboratory work. |
 | FAQ | Detailed answers to questions that require clarification or additional verification. |
+| Sessions | Preparation pages, objectives, important concepts, and links to laboratory work. |
 | Labs | Practical tasks, instructions, records of work, and success criteria. |
-| Reference | Concepts, vocabulary, examples, and procedures to consult during the course. |
-| Projects | Instructions and resources for certificative work. |
-| Exam review | Practice questions, summaries, and exam preparation. |
 
-!!! important "Visible work"
-    When a question requires a calculation, conversion, comparison, or justification, the reasoning is part of the answer.
+!!! important "LÉA and MS Teams"
+    Alongside this site, you'll need to use the college's Léa platform. Here you'll find the class presentations, and the submission links for your courseworks. You'll also use it to contact me throughout the course, via the Mio messaging platform.
+
+    You'll also occasionally need to use MS Teams, primarily for in-class tests.
