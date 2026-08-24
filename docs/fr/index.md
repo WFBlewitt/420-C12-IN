@@ -18,6 +18,6 @@ Le cours vise à développer la capacité d'évaluer des composants logiciels et
 | Laboratoires | Tâches pratiques, consignes, traces de travail et critères de réussite. |
 
 !!! important "LÉA et MS Teams"
-    Vous devrez utiliser la plateforme Léa. Les diapositives de présentation des séances y seront disponibles, et c'est là que vous devrez rendre vos devoirs. Vous l’utiliserez aussi pour me contacter tout au long du cours, par les messages du MIO.
+    À côté de ce site, vous devrez utiliser la plateforme Léa. Les diapositives de présentation des séances y seront disponibles, et c'est là que vous devrez rendre vos devoirs. Vous l’utiliserez aussi pour me contacter tout au long du cours, par les messages du MIO.
     
     Vous devrez également utiliser occasionnellement MS Teams, particulièrement pour les tests en classe.
