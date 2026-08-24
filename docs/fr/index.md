@@ -13,12 +13,10 @@ Le cours vise à développer la capacité d'évaluer des composants logiciels et
 | Section | Utilisation |
 |---|---|
 | Guide de cours | Informations générales, évaluations, outils et politiques. |
-| Séances | Pages de préparation, objectifs, notions importantes et liens vers les laboratoires. |
 | FAQ | Réponses détaillées aux questions qui demandent une clarification ou une vérification supplémentaire. |
+| Séances | Pages de préparation, objectifs, notions importantes et liens vers les laboratoires. |
 | Laboratoires | Tâches pratiques, consignes, traces de travail et critères de réussite. |
-| Référence | Notions, vocabulaire, exemples et procédures à consulter pendant le cours. |
-| Projets | Consignes et ressources pour les travaux certificatifs. |
-| Révision d'examen | Questions de pratique, synthèses et préparation à l'examen. |
 
-!!! important "Travail visible"
-    Quand une question demande un calcul, une conversion, une comparaison ou une justification, la démarche fait partie de la réponse.
+!!! important "LÉA et MS Teams"
+    Vous devrez utiliser la plateforme Léa. Les diapositives de présentation des séances y seront disponibles, et c'est là que vous devrez rendre vos devoirs. Vous l’utiliserez aussi pour me contacter, par les messages du MIO.
+    Vous devrez également utiliser occasionnellement MS Teams, particulièrement pour les tests en classe.
