@@ -1,0 +1,2 @@
+mkdocs-material==9.6.16
+reportlab==4.4.9

@@ -1,0 +1,35 @@
+:root {
+  --c12-accent-soft: #e8f5f2;
+  --c12-warning-soft: #fff6df;
+  --c12-border: #d7dee8;
+}
+
+.translation-status,
+.teacher-note,
+.student-deliverable,
+.working-required {
+  border-left: 0.25rem solid var(--md-primary-fg-color);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  background: var(--c12-accent-soft);
+}
+
+.working-required {
+  border-left-color: #d97706;
+  background: var(--c12-warning-soft);
+}
+
+.checklist li {
+  margin: 0.35rem 0;
+}
+
+.compact-table table {
+  font-size: 0.9rem;
+}
+
+.demo-frame {
+  width: 100%;
+  min-height: 420px;
+  border: 1px solid var(--c12-border);
+  border-radius: 6px;
+}

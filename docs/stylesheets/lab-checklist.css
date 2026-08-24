@@ -1,0 +1,259 @@
+.lab-checklist {
+  --lab-border: color-mix(in srgb, var(--md-default-fg-color) 22%, transparent);
+  --lab-muted: color-mix(in srgb, var(--md-default-fg-color) 68%, transparent);
+  margin: 1.2rem 0;
+}
+
+.lab-gate,
+.lab-progress {
+  border: 1px solid var(--lab-border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.lab-gate {
+  background: color-mix(in srgb, var(--md-primary-fg-color) 7%, var(--md-default-bg-color));
+}
+
+.lab-gate h2,
+.lab-stage h2 {
+  margin-top: 0;
+}
+
+.lab-acknowledgements,
+.lab-tasks {
+  display: grid;
+  gap: 0.55rem;
+  margin: 1rem 0;
+}
+
+.lab-task {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0.7rem;
+  padding: 0.75rem;
+  border: 1px solid var(--lab-border);
+  border-radius: 6px;
+  background: var(--md-default-bg-color);
+  cursor: pointer;
+}
+
+.lab-task:hover {
+  border-color: var(--md-primary-fg-color);
+}
+
+.lab-task:focus-within {
+  outline: 3px solid color-mix(in srgb, var(--md-accent-fg-color) 35%, transparent);
+  outline-offset: 2px;
+}
+
+.lab-task input {
+  width: 1rem;
+  height: 1rem;
+  margin: 0.18rem 0 0;
+  accent-color: var(--md-primary-fg-color);
+}
+
+.lab-task strong {
+  display: block;
+  margin-bottom: 0.18rem;
+}
+
+.lab-task small {
+  display: block;
+  color: var(--lab-muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.lab-admin-note,
+.lab-command-note {
+  margin: 1rem 0;
+  padding: 0.8rem 1rem;
+  border-left: 4px solid var(--md-accent-fg-color);
+  background: color-mix(in srgb, var(--md-accent-fg-color) 8%, var(--md-default-bg-color));
+}
+
+.lab-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.lab-button {
+  min-height: 2.4rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--md-primary-fg-color);
+  border-radius: 6px;
+  background: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.lab-button.secondary {
+  background: transparent;
+  color: var(--md-primary-fg-color);
+}
+
+.lab-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.lab-content[hidden] {
+  display: none;
+}
+
+.lab-progress {
+  position: sticky;
+  top: 3.8rem;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.7rem 1rem;
+  align-items: center;
+  margin: 1rem 0 1.5rem;
+  background: var(--md-default-bg-color);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--md-default-fg-color) 10%, transparent);
+}
+
+.lab-progress p {
+  margin: 0;
+  font-weight: 700;
+}
+
+.lab-progress progress {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 0.7rem;
+  accent-color: var(--md-primary-fg-color);
+}
+
+.lab-stage {
+  margin: 2rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--lab-border);
+}
+
+.lab-stage.is-complete {
+  border-left-color: var(--md-primary-fg-color);
+}
+
+.lab-command {
+  display: block;
+  overflow-x: auto;
+  margin: 0.45rem 0;
+  padding: 0.65rem 0.8rem;
+  border-radius: 4px;
+  background: var(--md-code-bg-color);
+  color: var(--md-code-fg-color);
+  white-space: nowrap;
+}
+
+.lab-optional {
+  border-left-color: var(--md-accent-fg-color);
+}
+
+@media (max-width: 600px) {
+  .lab-progress {
+    top: 3.2rem;
+    grid-template-columns: 1fr;
+  }
+
+  .lab-progress progress {
+    grid-column: 1;
+  }
+
+  .lab-button {
+    width: 100%;
+  }
+}
+
+/* MkDocs Material applies typography rules directly to labels and inline text.
+   These component-scoped rules keep every checklist item on its own row. */
+.md-typeset .lab-checklist .lab-acknowledgements,
+.md-typeset .lab-checklist .lab-tasks {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 0.65rem !important;
+}
+
+.md-typeset .lab-checklist label.lab-task {
+  display: grid !important;
+  grid-template-columns: 1.25rem minmax(0, 1fr) !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0.8rem !important;
+  border: 1px solid var(--md-default-fg-color--lightest) !important;
+  border-radius: 6px !important;
+}
+
+.md-typeset .lab-checklist .lab-task > span,
+.md-typeset .lab-checklist .lab-task strong,
+.md-typeset .lab-checklist .lab-task small {
+  display: block !important;
+  min-width: 0;
+}
+
+.md-typeset .lab-checklist .lab-task input[type="checkbox"] {
+  position: static !important;
+  float: none !important;
+  margin: 0.2rem 0 0 !important;
+}
+
+.lab-command-type-only {
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: text;
+}
+
+.lab-command-type-only::before {
+  content: attr(data-type-label);
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--md-accent-fg-color);
+  font-family: var(--md-text-font-family);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.lab-guide {
+  margin: 1rem 0;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--md-accent-fg-color) 5%, var(--md-default-bg-color));
+}
+
+.lab-guide summary {
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.lab-guide[open] summary {
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.lab-guide-body {
+  padding: 0.2rem 1rem 0.9rem;
+}
+
+.lab-guide-body li {
+  margin-bottom: 0.35rem;
+}
+
+.lab-copyable-library {
+  margin-top: 2rem;
+}
+
+.lab-copyable-library[hidden] {
+  display: none;
+}

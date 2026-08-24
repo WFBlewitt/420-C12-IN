@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500" role="img" aria-labelledby="title desc">
+  <title id="title">Integration spectrum from modular PC to integrated device</title>
+  <desc id="desc">Four stages show a modular desktop, an APU-based system, a single-board computer, and a highly integrated device. Independent replacement generally decreases from left to right while compactness and shared resources increase.</desc>
+  <rect width="1200" height="500" fill="#ffffff"/>
+  <text x="600" y="42" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#173b57">Integration changes which parts remain independent</text>
+  <line x1="122" y1="90" x2="1078" y2="90" stroke="#2b7a78" stroke-width="5"/>
+  <polygon points="1078,90 1058,78 1058,102" fill="#2b7a78"/>
+  <text x="122" y="76" font-family="Arial, sans-serif" font-size="16" fill="#36525f">more modular</text>
+  <text x="1078" y="76" text-anchor="end" font-family="Arial, sans-serif" font-size="16" fill="#36525f">more integrated</text>
+
+  <g transform="translate(55 120)">
+    <rect width="250" height="250" rx="14" fill="#eef4f7" stroke="#173b57" stroke-width="3"/>
+    <text x="125" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#173b57">Modular desktop</text>
+    <rect x="30" y="54" width="82" height="42" rx="6" fill="#ffffff" stroke="#2b7a78" stroke-width="2"/>
+    <text x="71" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#173b57">CPU</text>
+    <rect x="138" y="54" width="82" height="42" rx="6" fill="#ffffff" stroke="#2b7a78" stroke-width="2"/>
+    <text x="179" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#173b57">GPU</text>
+    <rect x="30" y="110" width="82" height="42" rx="6" fill="#ffffff" stroke="#2b7a78" stroke-width="2"/>
+    <text x="71" y="136" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#173b57">RAM</text>
+    <rect x="138" y="110" width="82" height="42" rx="6" fill="#ffffff" stroke="#2b7a78" stroke-width="2"/>
+    <text x="179" y="136" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#173b57">SSD</text>
+    <text x="125" y="185" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#36525f">separate, visible components</text>
+    <text x="125" y="207" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#36525f">many parts can be replaced</text>
+    <text x="125" y="226" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#36525f">independently</text>
+  </g>
+
+  <g transform="translate(335 120)">
+    <rect width="250" height="250" rx="14" fill="#eef4f7" stroke="#173b57" stroke-width="3"/>
+    <text x="125" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#173b57">APU-based system</text>
+    <rect x="42" y="55" width="166" height="74" rx="10" fill="#d7ece8" stroke="#2b7a78" stroke-width="2"/>
+    <text x="125" y="83" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#173b57">CPU + integrated GPU</text>
+    <text x="125" y="108" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#36525f">in one processor product</text>
+    <rect x="42" y="146" width="76" height="35" rx="6" fill="#ffffff" stroke="#2b7a78" stroke-width="2"/>
+    <text x="80" y="169" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#173b57">RAM</text>
+    <rect x="132" y="146" width="76" height="35" rx="6" fill="#ffffff" stroke="#2b7a78" stroke-width="2"/>
+    <text x="170" y="169" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#173b57">SSD</text>
+    <text x="125" y="207" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#36525f">more integration, while some</text>
+    <text x="125" y="226" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#36525f">components remain</text>
+    <text x="125" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#36525f">replaceable</text>
+  </g>
+
+  <g transform="translate(615 120)">
+    <rect width="250" height="250" rx="14" fill="#eef4f7" stroke="#173b57" stroke-width="3"/>
+    <text x="125" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#173b57">Single-board computer</text>
+    <rect x="28" y="52" width="194" height="138" rx="10" fill="#d7ece8" stroke="#2b7a78" stroke-width="2"/>
+    <rect x="48" y="70" width="92" height="64" rx="7" fill="#ffffff" stroke="#173b57" stroke-width="2"/>
+    <text x="94" y="95" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#173b57">SoC</text>
+    <text x="94" y="116" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#36525f">CPU, GPU, I/O</text>
+    <rect x="154" y="70" width="48" height="27" rx="5" fill="#ffffff" stroke="#173b57" stroke-width="2"/>
+    <text x="178" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#173b57">RAM</text>
+    <rect x="154" y="108" width="48" height="27" rx="5" fill="#ffffff" stroke="#173b57" stroke-width="2"/>
+    <text x="178" y="126" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#173b57">I/O</text>
+    <circle cx="53" cy="163" r="7" fill="#173b57"/><circle cx="75" cy="163" r="7" fill="#173b57"/><circle cx="97" cy="163" r="7" fill="#173b57"/>
+    <text x="125" y="214" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#36525f">complete computer on one</text>
+    <text x="125" y="234" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#36525f">main board</text>
+  </g>
+
+  <g transform="translate(895 120)">
+    <rect width="250" height="250" rx="14" fill="#eef4f7" stroke="#173b57" stroke-width="3"/>
+    <text x="125" y="32" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#173b57">Integrated device</text>
+    <rect x="35" y="55" width="180" height="136" rx="23" fill="#d7ece8" stroke="#2b7a78" stroke-width="2"/>
+    <rect x="70" y="76" width="110" height="58" rx="10" fill="#ffffff" stroke="#173b57" stroke-width="2"/>
+    <text x="125" y="101" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#173b57">SoC</text>
+    <text x="125" y="121" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#36525f">CPU + GPU + I/O</text>
+    <text x="125" y="157" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#36525f">memory / storage</text>
+    <text x="125" y="176" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#36525f">may be fixed</text>
+    <text x="125" y="211" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#36525f">small form; fewer</text>
+    <text x="125" y="229" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="#36525f">independent replacements</text>
+    <text x="125" y="247" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#36525f">verify the exact design</text>
+  </g>
+
+  <rect x="70" y="410" width="1060" height="58" rx="10" fill="#173b57"/>
+  <text x="90" y="445" font-family="Arial, sans-serif" font-size="14" fill="#ffffff">Independent replacement generally decreases →</text>
+  <text x="1110" y="445" text-anchor="end" font-family="Arial, sans-serif" font-size="14" fill="#ffffff">→ compactness and shared resources generally increase</text>
+</svg>

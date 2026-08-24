@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 620" role="img" aria-labelledby="title desc">
+  <title id="title">Évaluer la RAM : des questions différentes exigent des preuves différentes</title>
+  <desc id="desc">Cinq critères indépendants — format, organisation des canaux, débit, latence et compatibilité — sont reliés à un nœud central d'évaluation de la RAM. Les lignes montrent que chaque critère apporte des preuves; elles n'indiquent pas qu'un critère en cause un autre.</desc>
+  <style>
+    text{font-family:Arial,sans-serif;fill:#17202a}
+    .h{font-size:27px;font-weight:700}
+    .t{font-size:20px}
+    .s{font-size:17px}
+    .b{fill:#f7f9fa;stroke:#355c7d;stroke-width:2}
+    .c{fill:#eaf2f8;stroke:#355c7d;stroke-width:3}
+    .l{stroke:#355c7d;stroke-width:4;fill:none}
+  </style>
+  <text x="40" y="43" class="h">Évaluer la RAM : des questions différentes exigent des preuves différentes</text>
+
+  <rect class="b" x="55" y="105" width="250" height="105" rx="12"/>
+  <text x="180" y="145" text-anchor="middle" class="h">Format</text>
+  <text x="180" y="180" text-anchor="middle" class="t">DIMM, SO-DIMM, CAMM2...</text>
+
+  <rect class="b" x="425" y="85" width="250" height="125" rx="12"/>
+  <text x="550" y="125" text-anchor="middle" class="h">Canaux</text>
+  <text x="550" y="160" text-anchor="middle" class="t">population et</text>
+  <text x="550" y="188" text-anchor="middle" class="t">contrôleur mémoire</text>
+
+  <rect class="b" x="795" y="105" width="250" height="105" rx="12"/>
+  <text x="920" y="145" text-anchor="middle" class="h">Débit</text>
+  <text x="920" y="180" text-anchor="middle" class="t">MT/s et largeur du chemin</text>
+
+  <rect class="c" x="390" y="265" width="320" height="110" rx="18"/>
+  <text x="550" y="313" text-anchor="middle" class="h">Évaluation de la RAM</text>
+  <text x="550" y="345" text-anchor="middle" class="s">besoin + preuves + plateforme</text>
+
+  <rect class="b" x="150" y="440" width="280" height="105" rx="12"/>
+  <text x="290" y="480" text-anchor="middle" class="h">Latence</text>
+  <text x="290" y="515" text-anchor="middle" class="t">attente avant la donnée utile</text>
+
+  <rect class="b" x="670" y="440" width="280" height="105" rx="12"/>
+  <text x="810" y="480" text-anchor="middle" class="h">Compatibilité</text>
+  <text x="810" y="512" text-anchor="middle" class="t">CPU + carte mère + module + micrologiciel</text>
+
+  <line class="l" x1="285" y1="210" x2="430" y2="280"/>
+  <line class="l" x1="550" y1="210" x2="550" y2="265"/>
+  <line class="l" x1="815" y1="210" x2="670" y2="280"/>
+  <line class="l" x1="430" y1="475" x2="480" y2="375"/>
+  <line class="l" x1="670" y1="475" x2="620" y2="375"/>
+
+  <text x="75" y="592" class="s">Les lignes regroupent les critères d'évaluation; elles ne montrent pas de relation causale entre eux.</text>
+</svg>

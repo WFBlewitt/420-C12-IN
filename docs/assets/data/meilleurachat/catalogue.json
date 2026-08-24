@@ -1,0 +1,28 @@
+{
+  "retailer": "MeilleurAchat",
+  "review_site": "LaboPerformance",
+  "fleet_size": 50,
+  "suitability_rules": {
+    "gen5_storage": {
+      "adjustment": -1.0,
+      "alternative": "nvme2",
+      "fr": "Le SSD PCIe 5.0 est excellent, mais le supplément de prix apporte peu de valeur au mandat de jeu et de diffusion.",
+      "en": "The PCIe 5.0 SSD is excellent, but its price premium adds limited value to the gaming-and-streaming brief."
+    },
+    "oversized_psu": {
+      "adjustment": -1.0,
+      "fr": "Le bloc de 1000 W est techniquement capable, mais sa capacité dépasse largement le besoin de cette configuration.",
+      "en": "The 1000 W PSU is technically capable, but its capacity substantially exceeds this configuration's needs."
+    }
+  },
+  "category_order": [
+    "cpu",
+    "ram",
+    "gpu",
+    "storage",
+    "case",
+    "cooler",
+    "psu",
+    "wifi"
+  ]
+}

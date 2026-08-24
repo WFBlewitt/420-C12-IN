@@ -1,0 +1,139 @@
+site_name: 420-C12-IN - Outils et matériels informatiques
+site_url: https://wfblewitt.github.io/420-C12-IN/
+site_description: Course materials for 420-C12-IN
+site_author: Will Blewitt
+copyright: Copyright &copy; 2026 W. Blewitt
+
+draft_docs: |
+  drafts/visibility-test.md
+
+theme:
+  name: material
+  language: fr
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Activer le mode sombre
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Activer le mode clair
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - toc.integrate
+    - navigation.top
+    - content.code.copy
+
+nav:
+  - Français:
+      - Accueil: fr/index.md
+      - Guide de cours: fr/guide-de-cours.md
+      - FAQ: fr/faq/index.md
+      - Séances:
+          - Plan des séances: fr/seances/index.md
+          - "Séance 1 - Aperçu du cours et qu'est-ce qu'un ordinateur?": fr/seances/seance-1.md
+          - "Séance 2 - Bases 2 et 16": fr/seances/seance-2.md
+          - "Séance 3 - Représentation interne des données et boutisme": fr/seances/seance-3.md
+          - "Séance 4 - Mémoire adressable et architecture des micro-ordinateurs": fr/seances/seance-4.md
+          - "Séance 5 - Processeur, UAL et arithmétique à largeur fixe": fr/seances/seance-5.md
+          - "Séance 6 - Mémoire vive : capacité, performance et formats modernes": fr/seances/seance-6.md
+          - "Séance 7 - Du courant au système d’exploitation : ROM, micrologiciel, BIOS et UEFI": fr/seances/seance-7.md
+          - "Séance 8 - Carte mère et logique de montage d’un PC": fr/seances/seance-8.md
+          - "Séance 9 - Du support à la protection des données : choisir une stratégie de stockage": fr/seances/seance-9.md
+          - "Séance 10 - Du matériel aux services : le système d’exploitation": fr/seances/seance-10.md
+          - "Séance 11 - Du fichier à l’image et au son : évaluer une chaîne média": fr/seances/seance-11.md
+          - "Séance 12 - Du port au périphérique : vérifier une chaîne de connexion": fr/seances/seance-12.md
+          - "Séance 13 - Du PC modulaire au système intégré : évaluer une solution SoC": fr/seances/seance-13.md
+          - "Séance 14 - De l'interface réseau au service : suivre deux échanges": fr/seances/seance-14.md
+          - "Séance 15 - De la commande au script : automatiser une collecte avec PowerShell": fr/seances/seance-15.md
+      - Laboratoires:
+          - Plan des laboratoires: fr/laboratoires/index.md
+          - "Laboratoire 1 - Découvrir le poste de travail": fr/laboratoires/laboratoire-1.md
+          - "Laboratoire 2 - Représenter une valeur en bases 2, 10 et 16": fr/laboratoires/laboratoire-2.md
+          - "Laboratoire 3 - Interpréter les représentations internes": fr/laboratoires/laboratoire-3.md
+          - "Laboratoire 4 - Situer et déplacer les données": fr/laboratoires/laboratoire-4.md
+          - "Laboratoire 5 - Observer le processeur et analyser l’arithmétique de l’UAL": fr/laboratoires/laboratoire-5.md
+          - "Laboratoire 6 - Observer, calculer et évaluer la mémoire vive": fr/laboratoires/laboratoire-6.md
+          - "Laboratoire 7 - Observer et évaluer le démarrage et le micrologiciel": fr/laboratoires/laboratoire-7.md
+          - "Laboratoire 8 - Concevoir une plateforme PC compatible sous contrainte budgétaire": fr/laboratoires/laboratoire-8.md
+          - "Laboratoire 9 - Évaluer un système de stockage et construire une stratégie de protection": fr/laboratoires/laboratoire-9.md
+          - "Laboratoire 10 - Observer les ressources et manipuler un système de fichiers": fr/laboratoires/laboratoire-10.md
+          - "Laboratoire 11 - Observer et évaluer une chaîne graphique et audio": fr/laboratoires/laboratoire-11.md
+          - "Laboratoire 12 - Identifier, vérifier et diagnostiquer une chaîne de périphériques": fr/laboratoires/laboratoire-12.md
+          - "Laboratoire 13 - Comparer une solution intégrée et une plateforme modulaire": fr/laboratoires/laboratoire-13.md
+          - "Laboratoire 14 - Observer et diagnostiquer deux échanges réseau": fr/laboratoires/laboratoire-14.md
+          - "Laboratoire 15 - Compléter et vérifier un rapport système PowerShell": fr/laboratoires/laboratoire-15.md
+  - English:
+      - Home: en/index.md
+      - Course Guide: en/course-guide.md
+      - FAQ: en/faq/index.md
+      - Sessions:
+          - Session Schedule: en/sessions/index.md
+          - "Session 1 - Course Overview and What Is a Computer?": en/sessions/session-1.md
+          - "Session 2 - Bases 2 and 16": en/sessions/session-2.md
+          - "Session 3 - Internal Data Representation and Endianness": en/sessions/session-3.md
+          - "Session 4 - Addressable Memory and Microcomputer Architecture": en/sessions/session-4.md
+          - "Session 5 - Processor, ALU, and Fixed-Width Arithmetic": en/sessions/session-5.md
+          - "Session 6 - Random-Access Memory: Capacity, Performance, and Modern Formats": en/sessions/session-6.md
+          - "Session 7 - From Power-On to the Operating System: ROM, Firmware, BIOS, and UEFI": en/sessions/session-7.md
+          - "Session 8 - Motherboard and PC Build Logic": en/sessions/session-8.md
+          - "Session 9 - From Storage Media to Data Protection: Choosing a Storage Strategy": en/sessions/session-9.md
+          - "Session 10 - From Hardware to Services: The Operating System": en/sessions/session-10.md
+          - "Session 11 - From Files to Images and Sound: Evaluating a Media Chain": en/sessions/session-11.md
+          - "Session 12 - From Port to Peripheral: Verifying a Connection Chain": en/sessions/session-12.md
+          - "Session 13 - From the Modular PC to the Integrated System": en/sessions/session-13.md
+          - "Session 14 - From the Network Interface to the Service": en/sessions/session-14.md
+          - "Session 15 - From Command to Script": en/sessions/session-15.md
+      - Labs:
+          - Lab Schedule: en/labs/index.md
+          - "Lab 1 - Exploring the Workstation": en/labs/lab-1.md
+          - "Lab 2 - Representing a value in Bases 2, 10, and 16": en/labs/lab-2.md
+          - "Lab 3 - Interpreting Internal Representations": en/labs/lab-3.md
+          - "Lab 4 - Locating and Moving Data": en/labs/lab-4.md
+          - "Lab 5 - Observing the Processor and Analyzing ALU Arithmetic": en/labs/lab-5.md
+          - "Lab 6 - Observing, Calculating, and Evaluating RAM": en/labs/lab-6.md
+          - "Lab 7 - Observing and Evaluating Boot and Firmware": en/labs/lab-7.md
+          - "Lab 8 - Designing a Compatible PC Platform Under a Budget Constraint": en/labs/lab-8.md
+          - "Lab 9 - Evaluate a Storage System and Build a Data-Protection Strategy": en/labs/lab-9.md
+          - "Lab 10 - Observing Resources and Manipulating a File System": en/labs/lab-10.md
+          - "Lab 11 - Observing and Evaluating a Graphics and Audio Chain": en/labs/lab-11.md
+          - "Lab 12 - Identifying, Verifying, and Troubleshooting a Peripheral Chain": en/labs/lab-12.md
+          - "Lab 13 - Comparing an Integrated Solution and a Modular Platform": en/labs/lab-13.md
+          - "Lab 14 - Observing and Diagnosing Two Network Exchanges": en/labs/lab-14.md
+          - "Lab 15 - Completing and Verifying a PowerShell System Report": en/labs/lab-15.md
+
+hooks:
+  - hooks/lab_workload_signposting.py
+  - hooks/lab_conduct_gate.py
+  - hooks/session3_ieee754_scope.py
+  - hooks/session5_socket_integration.py
+  - hooks/lab_markdown_rendering.py
+  - hooks/localize_english_chrome.py
+
+extra_css:
+  - stylesheets/lab-checklist.css?v=4
+  - stylesheets/lab-no-js.css?v=1
+  - stylesheets/base-conversion-lab.css?v=2
+  - stylesheets/image-callouts.css?v=1
+  - stylesheets/alu-lab.css?v=1
+
+extra_javascript:
+  - javascripts/theme-sync.js
+  - javascripts/course-release.js?v=1
+  - javascripts/lab-checklist.js?v=5
+  - javascripts/base-conversion-lab.js?v=4
+  - javascripts/internal-representation-practice.js?v=3
+  - javascripts/alu-practice.js?v=1
+  - javascripts/ram-practice.js?v=1
+  - javascripts/pc-build-lab.js?v=3
+  - javascripts/storage-lab.js?v=2
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.superfences
+  - tables

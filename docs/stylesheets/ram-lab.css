@@ -1,0 +1,24 @@
+
+.ram-practice {
+  margin: 1rem 0;
+}
+
+.client-interview-stage {
+  border-top: 0.18rem solid var(--md-primary-fg-color);
+  padding-top: 1rem;
+}
+
+.practice-question {
+  margin: 1rem 0;
+  padding: 0.8rem;
+  border-left: 0.2rem solid var(--md-primary-fg-color);
+  background: var(--md-code-bg-color);
+  font-weight: 700;
+}
+
+.practice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.8rem;
+}

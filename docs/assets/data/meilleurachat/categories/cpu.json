@@ -1,0 +1,56 @@
+{
+  "fr": "Processeurs",
+  "en": "Processors",
+  "score_basis_fr": "Performance générale et soutien du jeu dans sa catégorie.",
+  "score_basis_en": "General performance and gaming support within its category.",
+  "products": {
+    "ultra5": {
+      "price": 359,
+      "score": 7.2,
+      "socket": "LGA1851",
+      "tdp": 65,
+      "label_fr": "Core Ultra 5 225",
+      "label_en": "Core Ultra 5 225",
+      "specs_fr": {"Socket": "LGA1851", "Puissance thermique de référence": "65 W"},
+      "specs_en": {"Socket": "LGA1851", "Reference thermal power": "65 W"},
+      "note_fr": "Bon équilibre pour un poste de jeu et de diffusion lorsque le budget doit aussi financer la carte graphique.",
+      "note_en": "Balanced choice for gaming and streaming when the budget must also fund the graphics card."
+    },
+    "ultra7": {
+      "price": 529,
+      "score": 9.1,
+      "socket": "LGA1851",
+      "tdp": 125,
+      "label_fr": "Core Ultra 7 265K",
+      "label_en": "Core Ultra 7 265K",
+      "specs_fr": {"Socket": "LGA1851", "Puissance thermique de référence": "125 W"},
+      "specs_en": {"Socket": "LGA1851", "Reference thermal power": "125 W"},
+      "note_fr": "Plus rapide, mais exige un refroidissement plus robuste et une vérification de la version du micrologiciel de la carte mère.",
+      "note_en": "Faster, but requires stronger cooling and a motherboard-firmware version check."
+    },
+    "i7": {
+      "price": 399,
+      "score": 8.0,
+      "socket": "LGA1700",
+      "tdp": 125,
+      "label_fr": "Core i7-14700K",
+      "label_en": "Core i7-14700K",
+      "specs_fr": {"Socket": "LGA1700", "Puissance thermique de référence": "125 W"},
+      "specs_en": {"Socket": "LGA1700", "Reference thermal power": "125 W"},
+      "note_fr": "Produit performant pour une autre plateforme Intel; le nom commercial ne remplace pas la vérification du socket.",
+      "note_en": "Strong product for another Intel platform; the product family name does not replace a socket check."
+    },
+    "ryzen7": {
+      "price": 429,
+      "score": 8.4,
+      "socket": "AM5",
+      "tdp": 65,
+      "label_fr": "Ryzen 7 9700X",
+      "label_en": "Ryzen 7 9700X",
+      "specs_fr": {"Socket": "AM5", "Puissance thermique de référence": "65 W"},
+      "specs_en": {"Socket": "AM5", "Reference thermal power": "65 W"},
+      "note_fr": "Produit AMD moderne pour une plateforme AM5.",
+      "note_en": "Modern AMD product for an AM5 platform."
+    }
+  }
+}

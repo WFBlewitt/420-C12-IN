@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Routeur de lettres programmable</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f7f4ec;
+      --surface: #ffffff;
+      --ink: #17252b;
+      --muted: #5f6b70;
+      --line: #b9c2c4;
+      --track: #315f66;
+      --track-active: #e2a72e;
+      --ball: #df624d;
+      --ball-stroke: #9e3a2c;
+      --control: #e7eceb;
+      --direction-left: #e6eff0;
+      --direction-right: #f7e8df;
+      --program-surface: rgb(255 255 255 / 0.55);
+      --bin-stroke: #7c8d91;
+      --bin-active: #f2d58b;
+      --bin-active-stroke: #a8740c;
+      --on-track: #ffffff;
+      --focus: #166b80;
+      --ball-shadow: rgb(23 37 43 / 0.2);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --paper: #11191c;
+        --surface: #192528;
+        --ink: #edf3f2;
+        --muted: #afbebf;
+        --line: #53676b;
+        --track: #75b7bd;
+        --track-active: #f1bd4c;
+        --ball: #f17861;
+        --ball-stroke: #ffad9d;
+        --control: #2b3d41;
+        --direction-left: #263d43;
+        --direction-right: #49352f;
+        --program-surface: rgb(255 255 255 / 0.035);
+        --bin-stroke: #70878b;
+        --bin-active: #765d24;
+        --bin-active-stroke: #f1bd4c;
+        --on-track: #101719;
+        --focus: #78c7d5;
+        --ball-shadow: rgb(0 0 0 / 0.45);
+      }
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --paper: #11191c;
+      --surface: #192528;
+      --ink: #edf3f2;
+      --muted: #afbebf;
+      --line: #53676b;
+      --track: #75b7bd;
+      --track-active: #f1bd4c;
+      --ball: #f17861;
+      --ball-stroke: #ffad9d;
+      --control: #2b3d41;
+      --direction-left: #263d43;
+      --direction-right: #49352f;
+      --program-surface: rgb(255 255 255 / 0.035);
+      --bin-stroke: #70878b;
+      --bin-active: #765d24;
+      --bin-active-stroke: #f1bd4c;
+      --on-track: #101719;
+      --focus: #78c7d5;
+      --ball-shadow: rgb(0 0 0 / 0.45);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    button { font: inherit; }
+
+    .app {
+      width: min(100%, 980px);
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) 44px;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .challenge {
+      min-width: 0;
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 3px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .target {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin: 10px 0 0;
+    }
+
+    .target span,
+    .observed span {
+      display: grid;
+      width: 32px;
+      height: 36px;
+      place-items: center;
+      border-bottom: 2px solid var(--line);
+      font-weight: 800;
+    }
+
+    .icon-button,
+    .command {
+      min-width: 44px;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .icon-button {
+      display: grid;
+      place-items: center;
+      font-size: 1.35rem;
+    }
+
+    button:hover:not(:disabled) { border-color: var(--track); }
+    button:focus-visible { outline: 3px solid color-mix(in srgb, var(--focus) 35%, transparent); outline-offset: 2px; }
+    button:disabled { cursor: not-allowed; opacity: 0.38; }
+
+    .machine {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 8 / 4.15;
+    }
+
+    .arm {
+      stroke: var(--track);
+      stroke-width: 8;
+      stroke-linecap: round;
+      transition: stroke 140ms ease, stroke-width 140ms ease;
+    }
+
+    .arm.active {
+      stroke: var(--track-active);
+      stroke-width: 12;
+    }
+
+    .joint { fill: var(--track); }
+    .bin { fill: var(--control); stroke: var(--bin-stroke); stroke-width: 2; }
+    .bin.active { fill: var(--bin-active); stroke: var(--bin-active-stroke); }
+    .bin-label { fill: var(--ink); font: 800 24px Inter, Arial, sans-serif; text-anchor: middle; }
+    .ball { fill: var(--ball); stroke: var(--ball-stroke); stroke-width: 3; filter: drop-shadow(0 4px 3px var(--ball-shadow)); }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 220px;
+      gap: 18px;
+      padding: 16px 0 0;
+    }
+
+    .workspace h2 {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      letter-spacing: 0;
+    }
+
+    .program {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(116px, 1fr));
+      gap: 8px;
+    }
+
+    .triplet {
+      min-width: 0;
+      padding: 8px;
+      border-left: 3px solid var(--line);
+      background: var(--program-surface);
+    }
+
+    .triplet.is-running { border-left-color: var(--track-active); }
+
+    .triplet-label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+
+    .direction {
+      width: 100%;
+      min-width: 30px;
+      height: 34px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: var(--control);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 1.15rem;
+      font-weight: 800;
+    }
+
+    .direction[data-direction="L"] { background: var(--direction-left); }
+    .direction[data-direction="R"] { background: var(--direction-right); }
+
+    .result {
+      min-width: 0;
+      border-left: 1px solid var(--line);
+      padding-left: 18px;
+    }
+
+    .observed {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      min-height: 38px;
+      margin-bottom: 14px;
+    }
+
+    .observed span.revealed {
+      animation: reveal 240ms ease-out both;
+      border-bottom-color: var(--track-active);
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .commands { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .command {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 0 13px;
+      font-weight: 750;
+    }
+
+    .command.primary {
+      border-color: var(--track);
+      background: var(--track);
+      color: var(--on-track);
+    }
+
+    .status {
+      min-height: 2.8em;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 760px) {
+      .app { padding: 12px; }
+      h1 { font-size: 1.55rem; }
+      .workspace { grid-template-columns: 1fr; }
+      .program { grid-template-columns: repeat(2, minmax(112px, 1fr)); }
+      .result { border-top: 1px solid var(--line); border-left: 0; padding: 14px 0 0; }
+      svg { aspect-ratio: 8 / 4.45; }
+    }
+
+    @media (max-width: 390px) {
+      .program { grid-template-columns: 1fr; }
+      .triplet { display: grid; grid-template-columns: minmax(75px, 1fr) minmax(120px, 1.7fr); align-items: center; gap: 6px; }
+      .triplet-label { margin: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="topbar">
+      <button class="icon-button" id="previous" type="button" title="Défi précédent" aria-label="Défi précédent">&larr;</button>
+      <div class="challenge">
+        <p class="eyebrow" id="challenge-label">Défi</p>
+        <h1 id="title">Programmez le trajet</h1>
+        <div class="target" id="target" aria-label="Mot cible"></div>
+      </div>
+      <button class="icon-button" id="next" type="button" title="Défi suivant" aria-label="Défi suivant">&rarr;</button>
+    </div>
+
+    <div class="machine">
+      <svg viewBox="0 0 800 445" role="img" aria-labelledby="machine-title machine-description">
+        <title id="machine-title">Machine de routage à huit destinations</title>
+        <desc id="machine-description">Trois niveaux d'embranchements dirigent une balle vers une destination de A à H.</desc>
+        <g id="arms"></g>
+        <g id="joints"></g>
+        <g id="bins"></g>
+        <circle class="ball" id="ball" cx="400" cy="26" r="13" visibility="hidden"></circle>
+      </svg>
+    </div>
+
+    <div class="workspace">
+      <section aria-labelledby="program-title">
+        <h2 id="program-title">Programme</h2>
+        <div class="program" id="program"></div>
+      </section>
+
+      <section class="result" aria-labelledby="observed-title">
+        <h2 id="observed-title">Résultat observé</h2>
+        <div class="observed" id="observed" aria-live="polite"></div>
+        <div class="commands">
+          <button class="command primary" id="run" type="button"><span aria-hidden="true">&#9654;</span><span id="run-label">Exécuter</span></button>
+          <button class="command" id="reset" type="button"><span aria-hidden="true">&#8635;</span><span id="reset-label">Effacer</span></button>
+        </div>
+        <p class="status" id="status" aria-live="polite"></p>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      window.addEventListener('message', event => {
+        const message = event.data;
+        if (message?.source !== 'c12-course-site' || message.type !== 'theme') return;
+        if (message.scheme !== 'light' && message.scheme !== 'dark') return;
+        document.documentElement.dataset.theme = message.scheme;
+      });
+
+      const languages = {
+        fr: {
+          words: ['BAC', 'FACE', 'BAGAGE', 'CACHAGE'],
+          challenge: 'Défi',
+          title: 'Programmez le trajet',
+          target: 'Mot cible',
+          program: 'Programme',
+          observed: 'Résultat observé',
+          run: 'Exécuter',
+          reset: 'Effacer',
+          previous: 'Défi précédent',
+          next: 'Défi suivant',
+          ball: 'Balle pour la lettre',
+          choose: 'Choisir la direction',
+          ready: 'Choisissez une direction dans chaque case, puis exécutez le programme.',
+          incomplete: 'Le programme contient encore des instructions vides.',
+          running: 'Le programme est en cours d’exécution. Les instructions sont verrouillées.',
+          finished: 'Comparez le résultat observé au mot cible. Modifiez le programme si nécessaire.',
+          machineTitle: 'Machine de routage à huit destinations',
+          machineDescription: 'Trois niveaux d’embranchements dirigent une balle vers une destination de A à H.'
+        },
+        en: {
+          words: ['CAB', 'FACE', 'BADGE', 'BAGGAGE'],
+          challenge: 'Challenge',
+          title: 'Program the route',
+          target: 'Target word',
+          program: 'Program',
+          observed: 'Observed output',
+          run: 'Run',
+          reset: 'Clear',
+          previous: 'Previous challenge',
+          next: 'Next challenge',
+          ball: 'Ball for letter',
+          choose: 'Choose direction',
+          ready: 'Choose a direction in every slot, then run the program.',
+          incomplete: 'The program still contains empty instructions.',
+          running: 'The program is running. Its instructions are locked.',
+          finished: 'Compare the observed output with the target word. Edit the program if necessary.',
+          machineTitle: 'Routing machine with eight destinations',
+          machineDescription: 'Three levels of branches direct a ball to a destination from A to H.'
+        }
+      };
+
+      const requestedLanguage = new URLSearchParams(location.search).get('lang');
+      const language = requestedLanguage === 'en' ? 'en' : 'fr';
+      const copy = languages[language];
+      document.documentElement.lang = language;
+
+      const points = [
+        [{ x: 400, y: 26 }],
+        [{ x: 200, y: 132 }, { x: 600, y: 132 }],
+        [{ x: 100, y: 246 }, { x: 300, y: 246 }, { x: 500, y: 246 }, { x: 700, y: 246 }],
+        Array.from({ length: 8 }, (_, index) => ({ x: 50 + index * 100, y: 367 }))
+      ];
+
+      const state = {
+        challenge: 0,
+        instructions: [],
+        running: false,
+        completed: new Set()
+      };
+
+      const elements = {
+        arms: document.querySelector('#arms'),
+        joints: document.querySelector('#joints'),
+        bins: document.querySelector('#bins'),
+        ball: document.querySelector('#ball'),
+        previous: document.querySelector('#previous'),
+        next: document.querySelector('#next'),
+        target: document.querySelector('#target'),
+        program: document.querySelector('#program'),
+        observed: document.querySelector('#observed'),
+        run: document.querySelector('#run'),
+        reset: document.querySelector('#reset'),
+        status: document.querySelector('#status')
+      };
+
+      function svgElement(name, attributes = {}) {
+        const node = document.createElementNS('http://www.w3.org/2000/svg', name);
+        Object.entries(attributes).forEach(([key, value]) => node.setAttribute(key, value));
+        return node;
+      }
+
+      function buildMachine() {
+        for (let level = 0; level < 3; level += 1) {
+          points[level].forEach((from, fromIndex) => {
+            [0, 1].forEach(direction => {
+              const toIndex = fromIndex * 2 + direction;
+              const to = points[level + 1][toIndex];
+              const line = svgElement('line', {
+                class: 'arm',
+                x1: from.x,
+                y1: from.y,
+                x2: to.x,
+                y2: to.y,
+                'data-arm': `${level}-${fromIndex}-${direction}`
+              });
+              elements.arms.append(line);
+            });
+          });
+        }
+
+        points.slice(0, 3).flat().forEach(point => {
+          elements.joints.append(svgElement('circle', { class: 'joint', cx: point.x, cy: point.y, r: 9 }));
+        });
+
+        points[3].forEach((point, index) => {
+          const group = svgElement('g', { 'data-bin': index });
+          group.append(svgElement('path', {
+            class: 'bin',
+            d: `M ${point.x - 42} ${point.y - 3} L ${point.x - 34} 430 L ${point.x + 34} 430 L ${point.x + 42} ${point.y - 3} Z`
+          }));
+          const label = svgElement('text', { class: 'bin-label', x: point.x, y: 414 });
+          label.textContent = String.fromCharCode(65 + index);
+          group.append(label);
+          elements.bins.append(group);
+        });
+      }
+
+      function setCopy() {
+        document.querySelector('#challenge-label').textContent = copy.challenge;
+        document.querySelector('#title').textContent = copy.title;
+        document.querySelector('#program-title').textContent = copy.program;
+        document.querySelector('#observed-title').textContent = copy.observed;
+        document.querySelector('#run-label').textContent = copy.run;
+        document.querySelector('#reset-label').textContent = copy.reset;
+        elements.previous.title = copy.previous;
+        elements.previous.setAttribute('aria-label', copy.previous);
+        elements.next.title = copy.next;
+        elements.next.setAttribute('aria-label', copy.next);
+        elements.target.setAttribute('aria-label', copy.target);
+        document.querySelector('#machine-title').textContent = copy.machineTitle;
+        document.querySelector('#machine-description').textContent = copy.machineDescription;
+      }
+
+      function setChallenge(index) {
+        if (state.running || index < 0 || index >= copy.words.length) return;
+        state.challenge = index;
+        const word = copy.words[index];
+        state.instructions = Array.from({ length: word.length }, () => [null, null, null]);
+        elements.target.replaceChildren(...[...word].map(letter => {
+          const span = document.createElement('span');
+          span.textContent = letter;
+          return span;
+        }));
+        elements.observed.replaceChildren(...[...word].map(() => document.createElement('span')));
+        buildProgram(word);
+        clearMachine();
+        elements.status.textContent = copy.ready;
+        elements.previous.disabled = index === 0;
+        elements.next.disabled = index === copy.words.length - 1 || !state.completed.has(index);
+        updateRunState();
+      }
+
+      function buildProgram(word) {
+        elements.program.replaceChildren();
+        [...word].forEach((letter, letterIndex) => {
+          const group = document.createElement('div');
+          group.className = 'triplet';
+          group.dataset.triplet = letterIndex;
+          const label = document.createElement('span');
+          label.className = 'triplet-label';
+          label.textContent = `${copy.ball} ${letter}`;
+          const choices = document.createElement('div');
+          choices.className = 'choices';
+
+          for (let step = 0; step < 3; step += 1) {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'direction';
+            button.textContent = '·';
+            button.dataset.letter = letterIndex;
+            button.dataset.step = step;
+            button.title = copy.choose;
+            button.setAttribute('aria-label', `${copy.choose}: ${letter}, ${step + 1}`);
+            button.addEventListener('click', () => cycleDirection(button));
+            choices.append(button);
+          }
+
+          group.append(label, choices);
+          elements.program.append(group);
+        });
+      }
+
+      function cycleDirection(button) {
+        if (state.running) return;
+        const letterIndex = Number(button.dataset.letter);
+        const step = Number(button.dataset.step);
+        const current = state.instructions[letterIndex][step];
+        const next = current === null ? 'L' : current === 'L' ? 'R' : null;
+        state.instructions[letterIndex][step] = next;
+        button.dataset.direction = next || '';
+        button.innerHTML = next === 'L' ? '&larr;' : next === 'R' ? '&rarr;' : '&middot;';
+        updateRunState();
+      }
+
+      function updateRunState() {
+        const complete = state.instructions.every(triplet => triplet.every(Boolean));
+        elements.run.disabled = state.running || !complete;
+        elements.reset.disabled = state.running;
+        document.querySelectorAll('.direction').forEach(button => { button.disabled = state.running; });
+      }
+
+      function clearMachine() {
+        document.querySelectorAll('.arm.active').forEach(arm => arm.classList.remove('active'));
+        document.querySelectorAll('.bin.active').forEach(bin => bin.classList.remove('active'));
+        document.querySelectorAll('.triplet.is-running').forEach(group => group.classList.remove('is-running'));
+        elements.ball.setAttribute('visibility', 'hidden');
+        elements.ball.setAttribute('cx', 400);
+        elements.ball.setAttribute('cy', 26);
+      }
+
+      function pause(duration) {
+          return new Promise(resolve => setTimeout(resolve, duration));
+      }
+
+      function moveBall(from, to, duration = 800) {
+          return new Promise(resolve => {
+              const started = performance.now();
+      
+              function frame(now) {
+                  const progress = Math.min(1, (now - started) / duration);
+                  const eased = 1 - Math.pow(1 - progress, 3);
+                  elements.ball.setAttribute('cx', from.x + (to.x - from.x) * eased);
+                  elements.ball.setAttribute('cy', from.y + (to.y - from.y) * eased);
+      
+                  if (progress < 1) requestAnimationFrame(frame);
+                  else resolve();
+              }
+      
+              requestAnimationFrame(frame);
+          });
+      }
+
+      async function animateTriplet(triplet, letterIndex) {
+        clearMachine();
+        const group = document.querySelector(`[data-triplet="${letterIndex}"]`);
+        group.classList.add('is-running');
+        elements.ball.setAttribute('visibility', 'visible');
+        let nodeIndex = 0;
+        let current = points[0][0];
+
+        for (let level = 0; level < 3; level += 1) {
+          const direction = triplet[level] === 'R' ? 1 : 0;
+          const arm = document.querySelector(`[data-arm="${level}-${nodeIndex}-${direction}"]`);
+          arm.classList.add('active');
+          const nextIndex = nodeIndex * 2 + direction;
+          const next = points[level + 1][nextIndex];
+          await moveBall(current, next);
+          await pause(90);
+          nodeIndex = nextIndex;
+          current = next;
+        }
+
+        const bin = document.querySelector(`[data-bin="${nodeIndex}"] .bin`);
+        bin.classList.add('active');
+        await moveBall(current, { x: current.x, y: 400 }, 210);
+        await pause(220);
+        const output = elements.observed.children[letterIndex];
+        output.textContent = String.fromCharCode(65 + nodeIndex);
+        output.classList.add('revealed');
+        group.classList.remove('is-running');
+      }
+
+      async function runProgram() {
+        if (state.running) return;
+        const complete = state.instructions.every(triplet => triplet.every(Boolean));
+        if (!complete) {
+          elements.status.textContent = copy.incomplete;
+          return;
+        }
+
+        state.running = true;
+        state.completed.delete(state.challenge);
+        elements.observed.querySelectorAll('span').forEach(span => {
+          span.textContent = '';
+          span.classList.remove('revealed');
+        });
+        elements.status.textContent = copy.running;
+        elements.previous.disabled = true;
+        elements.next.disabled = true;
+        updateRunState();
+
+        for (let index = 0; index < state.instructions.length; index += 1) {
+          await animateTriplet(state.instructions[index], index);
+        }
+
+        clearMachine();
+        state.running = false;
+        const observed = [...elements.observed.children].map(span => span.textContent).join('');
+        if (observed === copy.words[state.challenge]) state.completed.add(state.challenge);
+        elements.status.textContent = copy.finished;
+        elements.previous.disabled = state.challenge === 0;
+        elements.next.disabled = state.challenge === copy.words.length - 1 || !state.completed.has(state.challenge);
+        updateRunState();
+      }
+
+      elements.previous.addEventListener('click', () => setChallenge(state.challenge - 1));
+      elements.next.addEventListener('click', () => setChallenge(state.challenge + 1));
+      elements.run.addEventListener('click', runProgram);
+      elements.reset.addEventListener('click', () => setChallenge(state.challenge));
+
+      buildMachine();
+      setCopy();
+      setChallenge(0);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+
+.alu-column-exercise,
+.alu-practice {
+  margin: 1rem 0;
+}
+
+.alu-bit-table {
+  width: 100%;
+  table-layout: fixed;
+  font-variant-numeric: tabular-nums;
+}
+
+.alu-bit-table th,
+.alu-bit-table td {
+  padding: 0.35rem 0.25rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.alu-bit-table th:first-child {
+  width: 9rem;
+  text-align: left;
+}
+
+.alu-bit-table input {
+  width: 2.2rem;
+  min-width: 0;
+  padding: 0.25rem;
+  text-align: center;
+}
+
+.alu-summary-grid {
+  margin-top: 0.8rem;
+}
+
+.alu-classification-grid {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.alu-classification-row {
+  display: grid;
+  grid-template-columns: minmax(14rem, 1fr) repeat(2, minmax(8rem, 0.55fr));
+  gap: 0.65rem;
+  align-items: end;
+  padding: 0.65rem;
+  border: 0.05rem solid var(--md-default-fg-color--lightest);
+  border-radius: 0.35rem;
+}
+
+.alu-classification-row > code {
+  align-self: center;
+}
+
+.alu-classification-row label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.72rem;
+}
+
+.practice-question {
+  margin: 1rem 0;
+  padding: 0.8rem;
+  border-left: 0.2rem solid var(--md-primary-fg-color);
+  background: var(--md-code-bg-color);
+  font-weight: 700;
+}
+
+.practice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.8rem;
+}
+
+@media screen and (max-width: 44.984375em) {
+  .alu-bit-table {
+    font-size: 0.68rem;
+  }
+
+  .alu-bit-table th:first-child {
+    width: 6rem;
+  }
+
+  .alu-bit-table input {
+    width: 1.8rem;
+    padding: 0.15rem;
+  }
+
+  .alu-classification-row {
+    grid-template-columns: 1fr;
+  }
+}

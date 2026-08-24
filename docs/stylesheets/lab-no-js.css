@@ -1,0 +1,52 @@
+.lab-no-js-note {
+  margin: 1rem 0;
+  padding: 0.8rem 1rem;
+  border-left: 4px solid var(--md-accent-fg-color);
+  background: color-mix(in srgb, var(--md-accent-fg-color) 8%, var(--md-default-bg-color));
+}
+
+.lab-no-js-note p {
+  margin-bottom: 0;
+}
+
+html:not(.js-enabled) .lab-checklist .lab-actions,
+html:not(.js-enabled) .lab-checklist .lab-progress,
+html:not(.js-enabled) .lab-checklist .base-exercise-actions,
+html:not(.js-enabled) .lab-checklist .practice-generator {
+  display: none !important;
+}
+
+html:not(.js-enabled) .lab-checklist [data-lab-content][hidden] {
+  display: none !important;
+}
+
+html:not(.js-enabled) .lab-checklist:not(:has([data-lab-gate-check]:not(:checked))) [data-lab-content][hidden] {
+  display: block !important;
+}
+
+html:not(.js-enabled) .lab-checklist:not(:has([data-lab-gate-check]:not(:checked))) + .lab-copyable-library[hidden] {
+  display: block !important;
+}
+
+.lab-no-js-practice {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--md-primary-fg-color) 5%, var(--md-default-bg-color));
+}
+
+.lab-no-js-practice h3 {
+  margin-top: 0;
+}
+
+.lab-no-js-practice details {
+  margin-top: 1rem;
+}
+
+@supports not selector(:has(*)) {
+  html:not(.js-enabled) .lab-checklist [data-lab-content][hidden],
+  html:not(.js-enabled) .lab-copyable-library[hidden] {
+    display: block !important;
+  }
+}

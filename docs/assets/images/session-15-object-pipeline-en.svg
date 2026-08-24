@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="440" viewBox="0 0 1200 440" role="img" aria-labelledby="title desc">
+  <title id="title">PowerShell object pipeline</title>
+  <desc id="desc">Process objects with named properties pass through filter, sort, and select stages. The selected objects can be displayed or exported as structured CSV or JSON data. Formatting is shown as a final branch for human display only.</desc>
+  <rect width="1200" height="440" fill="#ffffff"/>
+  <text x="600" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#173b57">The pipeline carries objects with named properties</text>
+
+  <g font-family="Arial, sans-serif">
+    <rect x="38" y="90" width="235" height="210" rx="14" fill="#eef4f7" stroke="#173b57" stroke-width="3"/>
+    <text x="155" y="120" text-anchor="middle" font-size="20" font-weight="700" fill="#173b57">Get-Process</text>
+    <g transform="translate(65 140)">
+      <rect width="180" height="42" rx="7" fill="#ffffff" stroke="#2b7a78" stroke-width="2"/>
+      <text x="12" y="18" font-size="13" fill="#36525f">Name: browser</text><text x="12" y="34" font-size="13" fill="#36525f">Id: 4512 | WorkingSet64: …</text>
+      <rect y="53" width="180" height="42" rx="7" fill="#ffffff" stroke="#2b7a78" stroke-width="2"/>
+      <text x="12" y="71" font-size="13" fill="#36525f">Name: editor</text><text x="12" y="87" font-size="13" fill="#36525f">Id: 2276 | WorkingSet64: …</text>
+      <rect y="106" width="180" height="42" rx="7" fill="#ffffff" stroke="#2b7a78" stroke-width="2"/>
+      <text x="12" y="124" font-size="13" fill="#36525f">Name: service</text><text x="12" y="140" font-size="13" fill="#36525f">Id: 900 | WorkingSet64: …</text>
+    </g>
+
+    <rect x="325" y="120" width="170" height="96" rx="12" fill="#d7ece8" stroke="#2b7a78" stroke-width="3"/>
+    <text x="410" y="155" text-anchor="middle" font-size="19" font-weight="700" fill="#173b57">Where-Object</text>
+    <text x="410" y="181" text-anchor="middle" font-size="14" fill="#36525f">keep objects that</text>
+    <text x="410" y="201" text-anchor="middle" font-size="14" fill="#36525f">meet a condition</text>
+
+    <rect x="545" y="120" width="170" height="96" rx="12" fill="#f4e5c8" stroke="#a56a18" stroke-width="3"/>
+    <text x="630" y="155" text-anchor="middle" font-size="19" font-weight="700" fill="#173b57">Sort-Object</text>
+    <text x="630" y="181" text-anchor="middle" font-size="14" fill="#36525f">order by a named</text>
+    <text x="630" y="201" text-anchor="middle" font-size="14" fill="#36525f">property</text>
+
+    <rect x="765" y="120" width="170" height="96" rx="12" fill="#eee6f4" stroke="#6d4d83" stroke-width="3"/>
+    <text x="850" y="155" text-anchor="middle" font-size="19" font-weight="700" fill="#173b57">Select-Object</text>
+    <text x="850" y="181" text-anchor="middle" font-size="14" fill="#36525f">choose rows and</text>
+    <text x="850" y="201" text-anchor="middle" font-size="14" fill="#36525f">properties</text>
+
+    <rect x="990" y="84" width="175" height="88" rx="12" fill="#173b57"/>
+    <text x="1077" y="115" text-anchor="middle" font-size="16" font-weight="700" fill="#ffffff">Export data</text>
+    <text x="1077" y="141" text-anchor="middle" font-size="15" fill="#ffffff">CSV or JSON</text>
+
+    <rect x="990" y="224" width="175" height="88" rx="12" fill="#6c7a80"/>
+    <text x="1077" y="250" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Format at the end</text>
+    <text x="1077" y="273" text-anchor="middle" font-size="13" fill="#ffffff">human display</text>
+    <text x="1077" y="292" text-anchor="middle" font-size="13" fill="#ffffff">only</text>
+
+    <line x1="273" y1="168" x2="325" y2="168" stroke="#173b57" stroke-width="4"/><polygon points="325,168 311,160 311,176" fill="#173b57"/>
+    <line x1="495" y1="168" x2="545" y2="168" stroke="#173b57" stroke-width="4"/><polygon points="545,168 531,160 531,176" fill="#173b57"/>
+    <line x1="715" y1="168" x2="765" y2="168" stroke="#173b57" stroke-width="4"/><polygon points="765,168 751,160 751,176" fill="#173b57"/>
+    <line x1="935" y1="150" x2="990" y2="128" stroke="#173b57" stroke-width="4"/><polygon points="990,128 973,126 979,141" fill="#173b57"/>
+    <line x1="935" y1="190" x2="990" y2="268" stroke="#6c7a80" stroke-width="4"/><polygon points="990,268 973,260 985,251" fill="#6c7a80"/>
+
+    <rect x="205" y="342" width="790" height="64" rx="12" fill="#173b57"/>
+    <text x="600" y="370" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">Inspect types and properties at every stage</text>
+    <text x="600" y="394" text-anchor="middle" font-size="16" fill="#ffffff">empty fields, multiple objects, and errors remain evidence—not values to invent</text>
+  </g>
+</svg>

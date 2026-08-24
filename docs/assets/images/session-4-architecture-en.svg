@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 640" role="img" aria-labelledby="title desc">
+  <title id="title">Simplified contemporary computer architecture</title>
+  <desc id="desc">A non-directional relationship diagram. The CPU communicates with RAM and with platform interconnects and controllers. Those interconnects connect storage, PCIe expansion, and input-output and networking. A discrete GPU is shown separately as one example of a PCIe expansion device. Exact paths vary by platform.</desc>
+  <style>
+    text{font-family:Arial,sans-serif;fill:#17202a}
+    .h{font-size:28px;font-weight:700}
+    .t{font-size:20px}
+    .s{font-size:17px}
+    .b{fill:#f7f9fa;stroke:#355c7d;stroke-width:2}
+    .l{stroke:#355c7d;stroke-width:4;fill:none}
+  </style>
+  <text x="40" y="45" class="h">Contemporary architecture: major relationships</text>
+
+  <rect class="b" x="430" y="85" width="240" height="90" rx="12"/>
+  <text x="505" y="140" class="h">CPU</text>
+
+  <rect class="b" x="65" y="235" width="250" height="90" rx="12"/>
+  <text x="150" y="290" class="t">RAM</text>
+
+  <rect class="b" x="385" y="225" width="330" height="110" rx="12"/>
+  <text x="550" y="268" text-anchor="middle" class="t">Platform interconnects</text>
+  <text x="550" y="296" text-anchor="middle" class="t">and controllers</text>
+
+  <rect class="b" x="785" y="235" width="250" height="90" rx="12"/>
+  <text x="875" y="290" class="t">Storage</text>
+
+  <rect class="b" x="165" y="415" width="230" height="90" rx="12"/>
+  <text x="215" y="470" class="t">PCIe expansion</text>
+
+  <rect class="b" x="435" y="415" width="230" height="90" rx="12"/>
+  <text x="550" y="456" text-anchor="middle" class="t">GPU</text>
+  <text x="550" y="482" text-anchor="middle" class="s">example PCIe device</text>
+
+  <rect class="b" x="705" y="415" width="260" height="90" rx="12"/>
+  <text x="835" y="456" text-anchor="middle" class="t">I/O and network</text>
+  <text x="835" y="482" text-anchor="middle" class="s">USB, audio, NIC, etc.</text>
+
+  <line class="l" x1="430" y1="145" x2="315" y2="260"/>
+  <line class="l" x1="550" y1="175" x2="550" y2="225"/>
+  <line class="l" x1="715" y1="280" x2="785" y2="280"/>
+  <line class="l" x1="470" y1="335" x2="315" y2="415"/>
+  <line class="l" x1="395" y1="460" x2="435" y2="460"/>
+  <line class="l" x1="630" y1="335" x2="760" y2="415"/>
+
+  <text x="60" y="570" class="s">Lines show communication relationships, not one-way flow.</text>
+  <text x="60" y="598" class="s">Exact paths vary: some PCIe or storage links connect directly to the CPU; others use platform controllers.</text>
+</svg>

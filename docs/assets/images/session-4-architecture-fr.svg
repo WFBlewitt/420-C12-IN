@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 640" role="img" aria-labelledby="title desc">
+  <title id="title">Architecture contemporaine simplifiée</title>
+  <desc id="desc">Schéma de relations non directionnelles. Le processeur communique avec la mémoire vive ainsi qu'avec les interconnexions et contrôleurs de la plateforme. Ces interconnexions relient le stockage, l'extension PCIe et les entrées-sorties et le réseau. Un GPU dédié est présenté séparément comme exemple de périphérique d'extension PCIe. Les chemins exacts varient selon la plateforme.</desc>
+  <style>
+    text{font-family:Arial,sans-serif;fill:#17202a}
+    .h{font-size:28px;font-weight:700}
+    .t{font-size:20px}
+    .s{font-size:17px}
+    .b{fill:#f7f9fa;stroke:#355c7d;stroke-width:2}
+    .l{stroke:#355c7d;stroke-width:4;fill:none}
+  </style>
+  <text x="40" y="45" class="h">Architecture contemporaine : relations principales</text>
+
+  <rect class="b" x="430" y="85" width="240" height="90" rx="12"/>
+  <text x="505" y="140" class="h">CPU</text>
+
+  <rect class="b" x="65" y="235" width="250" height="90" rx="12"/>
+  <text x="125" y="290" class="t">Mémoire vive</text>
+
+  <rect class="b" x="385" y="225" width="330" height="110" rx="12"/>
+  <text x="550" y="268" text-anchor="middle" class="t">Interconnexions et contrôleurs</text>
+  <text x="550" y="296" text-anchor="middle" class="t">de la plateforme</text>
+
+  <rect class="b" x="785" y="235" width="250" height="90" rx="12"/>
+  <text x="865" y="290" class="t">Stockage</text>
+
+  <rect class="b" x="165" y="415" width="230" height="90" rx="12"/>
+  <text x="220" y="470" class="t">Extension PCIe</text>
+
+  <rect class="b" x="435" y="415" width="230" height="90" rx="12"/>
+  <text x="550" y="456" text-anchor="middle" class="t">GPU</text>
+  <text x="550" y="482" text-anchor="middle" class="s">exemple de périphérique PCIe</text>
+
+  <rect class="b" x="705" y="415" width="260" height="90" rx="12"/>
+  <text x="835" y="456" text-anchor="middle" class="t">E/S et réseau</text>
+  <text x="835" y="482" text-anchor="middle" class="s">USB, audio, carte réseau, etc.</text>
+
+  <line class="l" x1="430" y1="145" x2="315" y2="260"/>
+  <line class="l" x1="550" y1="175" x2="550" y2="225"/>
+  <line class="l" x1="715" y1="280" x2="785" y2="280"/>
+  <line class="l" x1="470" y1="335" x2="315" y2="415"/>
+  <line class="l" x1="395" y1="460" x2="435" y2="460"/>
+  <line class="l" x1="630" y1="335" x2="760" y2="415"/>
+
+  <text x="60" y="570" class="s">Les lignes montrent des relations de communication, et non un flux à sens unique.</text>
+  <text x="60" y="598" class="s">Les chemins exacts varient : certains liens PCIe ou de stockage sont directs au CPU; d'autres passent par des contrôleurs.</text>
+</svg>

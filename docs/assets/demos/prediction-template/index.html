@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Modele d'activite interactive</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      line-height: 1.5;
+      margin: 0;
+      padding: 2rem;
+      color: #172033;
+      background: #f7fafc;
+    }
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      background: white;
+      border: 1px solid #d7dee8;
+      border-radius: 8px;
+      padding: 1.5rem;
+    }
+    label, textarea {
+      display: block;
+      width: 100%;
+    }
+    textarea {
+      min-height: 7rem;
+      margin: 0.5rem 0 1rem;
+    }
+    button {
+      border: 0;
+      border-radius: 6px;
+      padding: 0.7rem 1rem;
+      background: #2456a6;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #e8f5f2;
+      border-left: 0.25rem solid #168773;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Modele d'activite interactive</h1>
+    <p>Cette page montre le patron pedagogique recommande: prediction, verification, comparaison.</p>
+
+    <label for="prediction">1. Ecrivez votre prediction avant de reveler l'explication.</label>
+    <textarea id="prediction" placeholder="Je pense que... parce que..."></textarea>
+
+    <button id="reveal" type="button">Reveler l'explication</button>
+
+    <section id="result" class="result" hidden>
+      <h2>2. Verification</h2>
+      <p>Remplacer ce texte par une visualisation ou une explication qui aide a comprendre le concept sans faire le travail a la place de l'etudiant.</p>
+      <h2>3. Comparaison</h2>
+      <p>Comparer la prediction initiale avec ce qui est observe. Corriger l'explication si necessaire.</p>
+    </section>
+  </main>
+
+  <script>
+    document.querySelector("#reveal").addEventListener("click", () => {
+      document.querySelector("#result").hidden = false;
+    });
+  </script>
+</body>
+</html>

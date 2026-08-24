@@ -1,0 +1,283 @@
+name: Validate source audit refinements
+
+on:
+  pull_request:
+    paths:
+      - "docs/fr/seances/**"
+      - "docs/fr/laboratoires/**"
+      - "docs/en/sessions/**"
+      - "docs/en/labs/**"
+      - "docs/assets/images/**"
+      - "hooks/lab_conduct_gate.py"
+      - "hooks/localize_english_chrome.py"
+      - "mkdocs.yml"
+      - ".github/workflows/validate-rendered-site-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -r requirements.txt
+      - run: python scripts/generate_meilleurachat_catalogues.py
+
+      - name: Validate audit refinements in Markdown source
+        run: |
+          python - <<'PY'
+          import re
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          errors = []
+
+          gate_expectations = {
+              "fr": {
+                  "dir": Path("docs/fr/laboratoires"),
+                  "name": "laboratoire-{}.md",
+                  "canonical": "Utilisation assignée",
+                  "template": 'data-gate-template="{done} sur {total} engagements reconnus"',
+                  "heading": "Entente de travail",
+                  "instruction": "Lisez chaque engagement. Le laboratoire sera accessible lorsque les trois engagements auront été reconnus.",
+                  "status": "0 sur 3 engagements reconnus",
+              },
+              "en": {
+                  "dir": Path("docs/en/labs"),
+                  "name": "lab-{}.md",
+                  "canonical": "Assigned use",
+                  "template": 'data-gate-template="{done} of {total} commitments acknowledged"',
+                  "heading": "Working agreement",
+                  "instruction": "Read each commitment. The lab will become available after all three commitments have been acknowledged.",
+                  "status": "0 of 3 commitments acknowledged",
+              },
+          }
+          for n in range(1, 16):
+              for language, spec in gate_expectations.items():
+                  path = spec["dir"] / spec["name"].format(n)
+                  text = path.read_text(encoding="utf-8")
+                  if text.count("data-lab-gate-check") != 3:
+                      errors.append(f"{path}: source gate does not contain exactly three commitments")
+                  for token_name in ("canonical", "template", "heading", "instruction", "status"):
+                      token = spec[token_name]
+                      if token not in text:
+                          errors.append(f"{path}: canonical {language} gate {token_name} missing")
+                  if "lab-specific-constraints" not in text:
+                      errors.append(f"{path}: lab-specific constraints missing from source")
+
+          for path, forbidden in [
+              (Path("docs/en/labs/lab-4.md"), "one 55-minute practical block"),
+              (Path("docs/fr/laboratoires/laboratoire-4.md"), "bloc pratique de 55 minutes"),
+          ]:
+              if forbidden in path.read_text(encoding="utf-8"):
+                  errors.append(f"{path}: obsolete guaranteed-time wording remains")
+
+          for path in [Path("docs/en/labs/lab-8.md"), Path("docs/fr/laboratoires/laboratoire-8.md")]:
+              text = path.read_text(encoding="utf-8")
+              if re.search(r"<h2[^>]*>\s*\d+\.", text) or re.search(r"(?m)^##\s+\d+\.", text):
+                  errors.append(f"{path}: numbered H2 stage heading remains")
+
+          required = [
+              (Path("docs/fr/seances/seance-1.md"), "## Erreurs fréquentes à éviter"),
+              (Path("docs/en/sessions/session-1.md"), "## Common errors to avoid"),
+              (Path("docs/fr/seances/seance-6.md"), "session-6-navigation"),
+              (Path("docs/en/sessions/session-6.md"), "session-6-navigation"),
+              (Path("docs/en/labs/lab-11.md"), "Advertised board power"),
+              (Path("docs/fr/laboratoires/laboratoire-11.md"), "Puissance électrique annoncée de la carte"),
+          ]
+          for path, token in required:
+              if token not in path.read_text(encoding="utf-8"):
+                  errors.append(f"{path}: missing source refinement {token}")
+
+          forbidden_source = [
+              (Path("docs/fr/seances/seance-4.md"), "Ces slots permettent"),
+              (Path("docs/fr/seances/seance-8.md"), "overclock"),
+              (Path("docs/fr/seances/seance-12.md"), "récepteur** ou *sink*"),
+              (Path("docs/en/labs/lab-11.md"), "Advertised graphics power"),
+              (Path("docs/fr/laboratoires/laboratoire-11.md"), "Puissance graphique annoncée"),
+          ]
+          for path, token in forbidden_source:
+              if token.lower() in path.read_text(encoding="utf-8").lower():
+                  errors.append(f"{path}: obsolete terminology remains in source: {token}")
+
+          session6_en = Path("docs/en/sessions/session-6.md").read_text(encoding="utf-8")
+          session6_fr = Path("docs/fr/seances/seance-6.md").read_text(encoding="utf-8")
+          for token in [
+              "simplified 64-bit aggregate platform data-path model",
+              "two independent 32-bit data subchannels",
+              "not to one DDR5 subchannel",
+          ]:
+              if token not in session6_en:
+                  errors.append(f"docs/en/sessions/session-6.md: DDR5 clarification missing: {token}")
+          for token in [
+              "modèle simplifié de chemin de données agrégé de 64 bits",
+              "deux sous-canaux de données indépendants de 32 bits",
+              "et non un seul sous-canal DDR5",
+              "surcadençage (overclocking)",
+          ]:
+              if token not in session6_fr:
+                  errors.append(f"docs/fr/seances/seance-6.md: DDR5/Québec French clarification missing: {token}")
+          if session6_fr.lower().count("overclock") != 1:
+              errors.append("docs/fr/seances/seance-6.md: overclocking should remain only once as an introduced English synonym")
+
+          session12_pairs = [
+              (Path("docs/fr/seances/seance-12.md"), ["USB-C", "## Audio", "## Réseau", "SATA et M.2", "Plug-and-Play", "## Interruptions", "accessibilité"]),
+              (Path("docs/en/sessions/session-12.md"), ["USB-C", "## Audio", "## Network", "## Storage connections", "Plug-and-Play", "## Interrupts", "## Accessibility peripherals"]),
+          ]
+          for path, tokens in session12_pairs:
+              text = path.read_text(encoding="utf-8")
+              for token in tokens:
+                  if token not in text:
+                      errors.append(f"{path}: bilingual reference-depth marker missing: {token}")
+
+          diagram_pages = {
+              Path("docs/en/sessions/session-3.md"): "session-3-endianness-en.svg",
+              Path("docs/fr/seances/seance-3.md"): "session-3-endianness-fr.svg",
+              Path("docs/en/sessions/session-4.md"): "session-4-architecture-en.svg",
+              Path("docs/fr/seances/seance-4.md"): "session-4-architecture-fr.svg",
+              Path("docs/en/sessions/session-5.md"): "session-5-core-datapath-en.svg",
+              Path("docs/fr/seances/seance-5.md"): "session-5-core-datapath-fr.svg",
+              Path("docs/en/sessions/session-6.md"): "session-6-ram-relationships-en.svg",
+              Path("docs/fr/seances/seance-6.md"): "session-6-ram-relationships-fr.svg",
+              Path("docs/en/sessions/session-9.md"): "session-9-storage-form-protocol-en.svg",
+              Path("docs/fr/seances/seance-9.md"): "session-9-storage-form-protocol-fr.svg",
+              Path("docs/en/sessions/session-11.md"): "session-11-media-chain-en.svg",
+              Path("docs/fr/seances/seance-11.md"): "session-11-media-chain-fr.svg",
+              Path("docs/en/sessions/session-14.md"): "session-14-network-path-en.svg",
+              Path("docs/fr/seances/seance-14.md"): "session-14-network-path-fr.svg",
+          }
+          for page, filename in diagram_pages.items():
+              if filename not in page.read_text(encoding="utf-8"):
+                  errors.append(f"{page}: diagram reference missing from source")
+              svg_path = Path("docs/assets/images") / filename
+              if not svg_path.exists():
+                  errors.append(f"missing diagram: {filename}")
+                  continue
+              try:
+                  root = ET.fromstring(svg_path.read_text(encoding="utf-8"))
+              except ET.ParseError as exc:
+                  errors.append(f"{filename}: invalid SVG XML: {exc}")
+                  continue
+              if root.attrib.get("role") != "img":
+                  errors.append(f"{filename}: role=img missing")
+              ns = {"svg": "http://www.w3.org/2000/svg"}
+              if root.find("svg:title", ns) is None or root.find("svg:desc", ns) is None:
+                  errors.append(f"{filename}: title/desc missing")
+
+          diagram_regressions = {
+              Path("docs/assets/images/session-4-architecture-en.svg"): {
+                  "required": ["Lines show communication relationships, not one-way flow.", "Platform interconnects"],
+                  "forbidden": ["PCIe / GPU"],
+              },
+              Path("docs/assets/images/session-4-architecture-fr.svg"): {
+                  "required": ["Les lignes montrent des relations de communication, et non un flux à sens unique.", "Interconnexions et contrôleurs"],
+                  "forbidden": ["PCIe / GPU"],
+              },
+              Path("docs/assets/images/session-6-ram-relationships-en.svg"): {
+                  "required": ["RAM evaluation", "Five independent criteria"],
+                  "forbidden": ["four questions"],
+              },
+              Path("docs/assets/images/session-6-ram-relationships-fr.svg"): {
+                  "required": ["Évaluation de la RAM", "Cinq critères indépendants"],
+                  "forbidden": ["quatre questions"],
+              },
+              Path("docs/assets/images/session-14-network-path-en.svg"): {
+                  "required": ['x1="360" y1="162" x2="840"', 'x1="840" y1="202" x2="360"', "response: returned record"],
+                  "forbidden": [],
+              },
+              Path("docs/assets/images/session-14-network-path-fr.svg"): {
+                  "required": ['x1="360" y1="162" x2="840"', 'x1="840" y1="202" x2="360"', "réponse : enregistrement retourné"],
+                  "forbidden": [],
+              },
+          }
+          for path, checks in diagram_regressions.items():
+              text = path.read_text(encoding="utf-8")
+              for token in checks["required"]:
+                  if token not in text:
+                      errors.append(f"{path}: corrected diagram marker missing: {token}")
+              for token in checks["forbidden"]:
+                  if token.lower() in text.lower():
+                      errors.append(f"{path}: obsolete diagram marker remains: {token}")
+
+          mkdocs = Path("mkdocs.yml").read_text(encoding="utf-8")
+          for required_hook in ["hooks/lab_conduct_gate.py", "hooks/localize_english_chrome.py"]:
+              if required_hook not in mkdocs:
+                  errors.append(f"mkdocs.yml does not register {required_hook}")
+          for forbidden in ["rendered_site_audit_refinements.py", "rendered_site_audit_followup.py"]:
+              if forbidden in mkdocs:
+                  errors.append(f"mkdocs.yml still registers {forbidden}")
+          for path in [Path("hooks/rendered_site_audit_refinements.py"), Path("hooks/rendered_site_audit_followup.py")]:
+              if path.exists():
+                  errors.append(f"content-rewriting hook still exists: {path}")
+
+          if errors:
+              raise SystemExit("\n".join(errors))
+          print("Source audit refinement checks passed.")
+          PY
+
+      - name: Build site strictly
+        run: mkdocs build --strict
+
+      - name: Validate rendered bilingual chrome and conduct gates
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+
+          errors = []
+
+          en_session = Path("site/en/sessions/session-1/index.html").read_text(encoding="utf-8")
+          fr_session = Path("site/fr/seances/seance-1/index.html").read_text(encoding="utf-8")
+
+          if not re.search(r'<html\s+lang="en"', en_session):
+              errors.append("English rendered pages do not declare lang=en")
+          if not re.search(r'<html\s+lang="fr"', fr_session):
+              errors.append("French rendered pages do not declare lang=fr")
+
+          for token in ["Skip to content", "Search", "Initializing search", "Table of contents", "Back to top"]:
+              if token not in en_session:
+                  errors.append(f"English rendered theme chrome missing: {token}")
+          for token in ["Aller au contenu", "Rechercher", "Initialisation de la recherche", "Table des matières", "Retour en haut de la page"]:
+              if token in en_session:
+                  errors.append(f"French theme chrome remains on English page: {token}")
+
+          for token in ["Aller au contenu", "Rechercher", "Table des matières", "Retour en haut de la page"]:
+              if token not in fr_session:
+                  errors.append(f"French rendered theme chrome missing after English localization: {token}")
+
+          for n in range(1, 16):
+              pairs = [
+                  (
+                      Path(f"site/en/labs/lab-{n}/index.html"),
+                      "Working agreement",
+                      "0 of 3 commitments acknowledged",
+                      ["Orientation and Safety", "conditions acknowledged", "rules acknowledged"],
+                  ),
+                  (
+                      Path(f"site/fr/laboratoires/laboratoire-{n}/index.html"),
+                      "Entente de travail",
+                      "0 sur 3 engagements reconnus",
+                      ["Orientation et sécurité", "conditions reconnues", "règles reconnues", "quatre règles"],
+                  ),
+              ]
+              for path, heading, status, forbidden in pairs:
+                  html = path.read_text(encoding="utf-8")
+                  if heading not in html:
+                      errors.append(f"{path}: canonical rendered gate heading missing")
+                  if status not in html:
+                      errors.append(f"{path}: canonical rendered gate status missing")
+                  if html.count("data-lab-gate-check") != 3:
+                      errors.append(f"{path}: rendered gate does not contain exactly three commitments")
+                  for token in forbidden:
+                      if token in html:
+                          errors.append(f"{path}: obsolete rendered gate wording remains: {token}")
+
+          if errors:
+              raise SystemExit("\n".join(errors))
+          print("Rendered bilingual chrome and conduct-gate checks passed.")
+          PY

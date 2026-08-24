@@ -1,0 +1,132 @@
+name: Validate Sessions 10-12
+
+on:
+  pull_request:
+    paths:
+      - "docs/fr/seances/seance-1[0-2].md"
+      - "docs/fr/laboratoires/laboratoire-1[0-2].md"
+      - "docs/en/sessions/session-1[0-2].md"
+      - "docs/en/labs/lab-1[0-2].md"
+      - "docs/fr/seances/index.md"
+      - "docs/fr/laboratoires/index.md"
+      - "docs/en/sessions/index.md"
+      - "docs/en/labs/index.md"
+      - "mkdocs.yml"
+      - ".github/workflows/validate-sessions-10-12.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Apply verified attribution and typo corrections
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              "docs/fr/seances/seance-11.md": {
+                  "procesur graphique": "processeur graphique",
+              },
+              "docs/fr/seances/seance-12.md": {
+                  "Photo : Dmitry G": "Photo : www.heimnetzwerke.net",
+                  "Illustration : Smial": "Illustration : NikNaks",
+                  "Photo : Podzemnik": "Photo : Michal Klajban (Podzemnik)",
+              },
+              "docs/en/sessions/session-12.md": {
+                  "Photo: Dmitry G": "Photo: www.heimnetzwerke.net",
+                  "Illustration: Smial": "Illustration: NikNaks",
+                  "Photo: Podzemnik": "Photo: Michal Klajban (Podzemnik)",
+              },
+          }
+
+          for filename, mapping in replacements.items():
+              path = Path(filename)
+              text = path.read_text(encoding="utf-8")
+              for old, new in mapping.items():
+                  text = text.replace(old, new)
+              path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Commit audit corrections when needed
+        if: github.event_name == 'pull_request'
+        run: |
+          if ! git diff --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add docs/fr/seances/seance-11.md docs/fr/seances/seance-12.md docs/en/sessions/session-12.md
+            git commit -m "Correct verified image credits and Session 11 typo"
+            git push
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Generate MeilleurAchat catalogues
+        run: python scripts/generate_meilleurachat_catalogues.py
+
+      - name: Check bilingual task parity and required structures
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+
+          pairs = [
+              (Path("docs/fr/laboratoires/laboratoire-10.md"), Path("docs/en/labs/lab-10.md"), 12),
+              (Path("docs/fr/laboratoires/laboratoire-11.md"), Path("docs/en/labs/lab-11.md"), 12),
+              (Path("docs/fr/laboratoires/laboratoire-12.md"), Path("docs/en/labs/lab-12.md"), 13),
+          ]
+
+          errors = []
+          for fr, en, expected in pairs:
+              fr_text = fr.read_text(encoding="utf-8")
+              en_text = en.read_text(encoding="utf-8")
+              fr_tasks = len(re.findall(r"data-lab-task-check", fr_text))
+              en_tasks = len(re.findall(r"data-lab-task-check", en_text))
+              if (fr_tasks, en_tasks) != (expected, expected):
+                  errors.append(f"{fr.name}/{en.name}: task counts {fr_tasks}/{en_tasks}, expected {expected}/{expected}")
+              for label, text in (("FR", fr_text), ("EN", en_text)):
+                  if text.count("data-lab-gate-check") != 3:
+                      errors.append(f"{label} {fr.stem}: conduct gate does not contain three commitments")
+                  if "<noscript>" not in text:
+                      errors.append(f"{label} {fr.stem}: no no-JavaScript fallback")
+                  if "data-lab-progress" not in text:
+                      errors.append(f"{label} {fr.stem}: no required-task progress element")
+
+          session_pairs = [
+              (Path("docs/fr/seances/seance-10.md"), Path("docs/en/sessions/session-10.md")),
+              (Path("docs/fr/seances/seance-11.md"), Path("docs/en/sessions/session-11.md")),
+              (Path("docs/fr/seances/seance-12.md"), Path("docs/en/sessions/session-12.md")),
+          ]
+          required_fr = ["## But de la séance", "## Objectifs", "## Erreurs fréquentes à éviter", "## Ce qu’il faut retenir", "## Passer à la pratique"]
+          required_en = ["## Purpose of the session", "## Objectives", "## Common errors to avoid", "## What to remember", "## Put it into practice"]
+          for fr, en in session_pairs:
+              fr_text = fr.read_text(encoding="utf-8")
+              en_text = en.read_text(encoding="utf-8")
+              for heading in required_fr:
+                  if heading not in fr_text:
+                      errors.append(f"{fr.name}: missing {heading}")
+              for heading in required_en:
+                  if heading not in en_text:
+                      errors.append(f"{en.name}: missing {heading}")
+
+          if errors:
+              raise SystemExit("\n".join(errors))
+          print("Bilingual structure and task parity checks passed.")
+          PY
+
+      - name: Build site strictly
+        run: mkdocs build --strict

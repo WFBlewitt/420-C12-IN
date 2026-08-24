@@ -1,0 +1,874 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Atelier des valeurs de position</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f7f4ec;
+      --surface: #ffffff;
+      --ink: #17252b;
+      --muted: #5f6b70;
+      --line: #b9c2c4;
+      --accent: #315f66;
+      --accent-strong: #20474d;
+      --accent-soft: #e6eff0;
+      --active: #e2a72e;
+      --active-soft: #f7e9bd;
+      --wrong: #b94d3c;
+      --wrong-soft: #f8e4df;
+      --right: #377a54;
+      --right-soft: #e2f1e8;
+      --control: #edf0ef;
+      --on-accent: #ffffff;
+      --focus: #166b80;
+      --shadow: rgb(23 37 43 / 0.12);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --paper: #11191c;
+        --surface: #192528;
+        --ink: #edf3f2;
+        --muted: #afbebf;
+        --line: #53676b;
+        --accent: #75b7bd;
+        --accent-strong: #8bcbd1;
+        --accent-soft: #263d43;
+        --active: #f1bd4c;
+        --active-soft: #4b3f20;
+        --wrong: #ff927d;
+        --wrong-soft: #49312d;
+        --right: #77c394;
+        --right-soft: #244334;
+        --control: #2b3d41;
+        --on-accent: #101719;
+        --focus: #78c7d5;
+        --shadow: rgb(0 0 0 / 0.35);
+      }
+    }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --paper: #11191c;
+      --surface: #192528;
+      --ink: #edf3f2;
+      --muted: #afbebf;
+      --line: #53676b;
+      --accent: #75b7bd;
+      --accent-strong: #8bcbd1;
+      --accent-soft: #263d43;
+      --active: #f1bd4c;
+      --active-soft: #4b3f20;
+      --wrong: #ff927d;
+      --wrong-soft: #49312d;
+      --right: #77c394;
+      --right-soft: #244334;
+      --control: #2b3d41;
+      --on-accent: #101719;
+      --focus: #78c7d5;
+      --shadow: rgb(0 0 0 / 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    button,
+    input { font: inherit; }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--focus) 38%, transparent);
+      outline-offset: 2px;
+    }
+
+    .app {
+      width: min(100%, 1020px);
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) 44px;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .heading {
+      min-width: 0;
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 3px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 750;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .icon-button,
+    .action,
+    .mode-button,
+    .weight-button {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--surface);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .icon-button {
+      display: grid;
+      min-width: 44px;
+      min-height: 44px;
+      place-items: center;
+      font-size: 1.25rem;
+    }
+
+    button:hover:not(:disabled) { border-color: var(--accent); }
+    button:disabled { cursor: not-allowed; opacity: 0.38; }
+
+    .mode-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: min(100%, 420px);
+      margin: 0 auto 16px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--control);
+      padding: 3px;
+    }
+
+    .mode-button {
+      min-height: 40px;
+      border-color: transparent;
+      background: transparent;
+      font-weight: 750;
+    }
+
+    .mode-button[aria-selected="true"] {
+      border-color: var(--accent);
+      background: var(--surface);
+      color: var(--accent-strong);
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+
+    .challenge {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    .challenge-label {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .numeral {
+      margin: 0;
+      color: var(--accent-strong);
+      font-family: "Roboto Mono", Consolas, monospace;
+      font-size: clamp(2rem, 7vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1;
+      overflow-wrap: anywhere;
+    }
+
+    .numeral sub {
+      font-size: 0.42em;
+      vertical-align: -0.15em;
+    }
+
+    .instruction {
+      max-width: 760px;
+      margin: 12px auto 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .workspace {
+      padding: 18px 0 0;
+    }
+
+    .section-title {
+      margin: 0 0 10px;
+      font-size: 0.95rem;
+      line-height: 1.3;
+    }
+
+    .position-scroll {
+      overflow-x: auto;
+      padding: 3px 2px 12px;
+      scrollbar-color: var(--line) transparent;
+    }
+
+    .binary-positions {
+      display: grid;
+      grid-auto-columns: minmax(92px, 1fr);
+      grid-auto-flow: column;
+      min-width: max-content;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .position {
+      display: grid;
+      grid-template-rows: 32px 44px 32px 42px;
+      min-width: 92px;
+      border-right: 1px solid var(--line);
+      text-align: center;
+    }
+
+    .position:first-child { border-left: 1px solid var(--line); }
+
+    .position .power,
+    .position .weight,
+    .position .bit {
+      display: grid;
+      place-items: center;
+    }
+
+    .position .power,
+    .position .weight {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .position .bit {
+      background: var(--control);
+      font-family: "Roboto Mono", Consolas, monospace;
+      font-size: 1.45rem;
+      font-weight: 800;
+    }
+
+    .weight-button {
+      width: calc(100% - 10px);
+      min-height: 34px;
+      margin: 4px 5px;
+      padding: 2px;
+      font-weight: 750;
+    }
+
+    .weight-button[aria-pressed="true"] {
+      border-color: var(--active);
+      background: var(--active-soft);
+      color: var(--ink);
+      transform: translateY(-2px);
+      box-shadow: 0 3px 0 color-mix(in srgb, var(--active) 55%, transparent);
+    }
+
+    .hex-positions {
+      display: grid;
+      grid-template-columns: repeat(var(--columns), minmax(150px, 1fr));
+      min-width: max-content;
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .hex-position {
+      display: grid;
+      grid-template-rows: 48px auto;
+      min-width: 150px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hex-symbol {
+      display: grid;
+      place-items: center;
+      background: var(--control);
+      font-family: "Roboto Mono", Consolas, monospace;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .hex-fields {
+      display: grid;
+      gap: 10px;
+      padding: 12px;
+    }
+
+    label {
+      display: grid;
+      gap: 4px;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: var(--surface);
+      color: var(--ink);
+      padding: 7px 9px;
+    }
+
+    .sum-area {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(150px, 210px);
+      gap: 18px;
+      align-items: end;
+      margin-top: 18px;
+    }
+
+    .expression-wrap { min-width: 0; }
+
+    .expression {
+      min-height: 48px;
+      border-bottom: 2px solid var(--line);
+      padding: 10px 4px;
+      color: var(--accent-strong);
+      font-family: "Roboto Mono", Consolas, monospace;
+      font-size: 1.05rem;
+      font-weight: 750;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .expression.placeholder { color: var(--muted); font-family: inherit; font-weight: 500; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .action {
+      min-height: 42px;
+      padding: 0 14px;
+      font-weight: 750;
+    }
+
+    .action.primary {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--on-accent);
+    }
+
+    .status {
+      min-height: 3.5em;
+      margin: 14px 0 0;
+      border-left: 4px solid var(--line);
+      padding: 9px 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .status[data-state="wrong"] {
+      border-left-color: var(--wrong);
+      background: var(--wrong-soft);
+      color: var(--ink);
+    }
+
+    .status[data-state="right"] {
+      border-left-color: var(--right);
+      background: var(--right-soft);
+      color: var(--ink);
+      animation: reveal 220ms ease-out both;
+    }
+
+    .completion {
+      display: none;
+      margin-top: 14px;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      line-height: 1.5;
+    }
+
+    .completion.visible {
+      display: block;
+      animation: reveal 220ms ease-out both;
+    }
+
+    .completion strong { color: var(--accent-strong); }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 680px) {
+      .app { padding: 12px; }
+      h1 { font-size: 1.45rem; }
+      .challenge { padding: 16px 10px; }
+      .sum-area { grid-template-columns: 1fr; gap: 12px; }
+      .sum-area label { max-width: 240px; }
+      .actions .action { flex: 1 1 140px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 1ms !important;
+        transition-duration: 1ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="toolbar">
+      <button class="icon-button" id="previous" type="button" title="Défi précédent" aria-label="Défi précédent">&larr;</button>
+      <div class="heading">
+        <p class="eyebrow" id="challenge-count">Défi 1 sur 4</p>
+        <h1 id="title">Construisez le développement</h1>
+      </div>
+      <button class="icon-button" id="next" type="button" title="Défi suivant" aria-label="Défi suivant">&rarr;</button>
+    </div>
+
+    <div class="mode-switch" role="tablist" aria-label="Mode de conversion">
+      <button class="mode-button" id="binary-mode" type="button" role="tab" aria-selected="true">Binaire</button>
+      <button class="mode-button" id="hex-mode" type="button" role="tab" aria-selected="false">Hexadécimal</button>
+    </div>
+
+    <section class="challenge" aria-labelledby="numeral">
+      <p class="challenge-label" id="challenge-label">Convertissez vers la base 10</p>
+      <p class="numeral" id="numeral"></p>
+      <p class="instruction" id="instruction"></p>
+    </section>
+
+    <section class="workspace" aria-live="polite">
+      <h2 class="section-title" id="position-title"></h2>
+      <div class="position-scroll" id="position-scroll"></div>
+
+      <div class="sum-area">
+        <div class="expression-wrap">
+          <h2 class="section-title" id="expression-title"></h2>
+          <div class="expression placeholder" id="expression"></div>
+        </div>
+        <label id="total-label">
+          <span></span>
+          <input id="total" type="number" inputmode="numeric" autocomplete="off">
+        </label>
+      </div>
+
+      <div class="actions">
+        <button class="action primary" id="check" type="button"></button>
+        <button class="action" id="reset" type="button"></button>
+      </div>
+
+      <p class="status" id="status" role="status"></p>
+      <div class="completion" id="completion"></div>
+    </section>
+  </main>
+
+  <script>
+    const copy = {
+      fr: {
+        pageTitle: "Atelier des valeurs de position",
+        title: "Construisez le développement",
+        counter: (n, total) => `Défi ${n} sur ${total}`,
+        previous: "Défi précédent",
+        next: "Défi suivant",
+        modeLabel: "Mode de conversion",
+        binary: "Binaire",
+        hex: "Hexadécimal",
+        challengeLabel: "Convertissez vers la base 10",
+        binaryInstruction: "Sélectionnez les valeurs de position qui contribuent, puis prédisez le total décimal.",
+        hexInstruction: "Donnez la valeur décimale de chaque chiffre, calculez sa contribution, puis prédisez le total.",
+        binaryPositionTitle: "Quelles positions contribuent à la somme?",
+        hexPositionTitle: "Complétez chaque position hexadécimale",
+        expressionTitle: "Développement en construction",
+        expressionEmpty: "Sélectionnez au moins une position.",
+        hexExpressionEmpty: "Les contributions apparaîtront ici lorsque vous les inscrirez.",
+        total: "Total prévu en base 10",
+        coefficient: "Valeur du chiffre",
+        contribution: "Contribution",
+        check: "Vérifier la démarche",
+        reset: "Recommencer",
+        startBinary: "Commencez par sélectionner toutes les positions dont le bit vaut 1.",
+        startHex: "Commencez par traduire chaque chiffre hexadécimal en valeur décimale.",
+        missingBinary: count => `${count} position${count > 1 ? "s nécessaires n'ont" : " nécessaire n'a"} pas encore été sélectionnée${count > 1 ? "s" : ""}.`,
+        extraBinary: count => `${count} position${count > 1 ? "s sélectionnées ne contribuent" : " sélectionnée ne contribue"} pas à cette valeur.`,
+        totalMissing: "Inscrivez votre total décimal avant de vérifier.",
+        totalWrong: "Les positions sont correctes, mais leur somme ne correspond pas encore à votre total. Vérifiez l'addition.",
+        hexIncomplete: "Certaines valeurs ou contributions sont encore absentes.",
+        hexValueWrong: position => `La valeur du chiffre à la position ${position} doit être revue.`,
+        hexContributionWrong: position => `La contribution de la position ${position} doit être revue. Multipliez la valeur du chiffre par la valeur de position.`,
+        success: "Votre démarche et votre total sont corrects. Le défi suivant est maintenant accessible.",
+        completeLabel: "Développement complet :",
+        position: "position",
+        weight: "valeur",
+        selected: "sélectionnée",
+        notSelected: "non sélectionnée"
+      },
+      en: {
+        pageTitle: "Positional Value Workshop",
+        title: "Build the expansion",
+        counter: (n, total) => `Challenge ${n} of ${total}`,
+        previous: "Previous challenge",
+        next: "Next challenge",
+        modeLabel: "Conversion mode",
+        binary: "Binary",
+        hex: "Hexadecimal",
+        challengeLabel: "Convert to base 10",
+        binaryInstruction: "Select the positional values that contribute, then predict the decimal total.",
+        hexInstruction: "Enter each digit's decimal value, calculate its contribution, then predict the total.",
+        binaryPositionTitle: "Which positions contribute to the sum?",
+        hexPositionTitle: "Complete each hexadecimal position",
+        expressionTitle: "Expansion in progress",
+        expressionEmpty: "Select at least one position.",
+        hexExpressionEmpty: "Contributions will appear here as you enter them.",
+        total: "Predicted base-10 total",
+        coefficient: "Digit value",
+        contribution: "Contribution",
+        check: "Check the work",
+        reset: "Start over",
+        startBinary: "Start by selecting every position whose bit is 1.",
+        startHex: "Start by translating each hexadecimal digit into its decimal value.",
+        missingBinary: count => `${count} required position${count > 1 ? "s have" : " has"} not been selected yet.`,
+        extraBinary: count => `${count} selected position${count > 1 ? "s do" : " does"} not contribute to this value.`,
+        totalMissing: "Enter your predicted decimal total before checking.",
+        totalWrong: "The positions are correct, but their sum does not match your total yet. Check the addition.",
+        hexIncomplete: "Some digit values or contributions are still missing.",
+        hexValueWrong: position => `Review the digit value at position ${position}.`,
+        hexContributionWrong: position => `Review the contribution at position ${position}. Multiply the digit value by the positional value.`,
+        success: "Your work and total are correct. The next challenge is now available.",
+        completeLabel: "Complete expansion:",
+        position: "position",
+        weight: "value",
+        selected: "selected",
+        notSelected: "not selected"
+      }
+    };
+
+    const challenges = {
+      binary: [
+        { numeral: "1101", value: 13 },
+        { numeral: "10110110", value: 182 },
+        { numeral: "11001001", value: 201 },
+        { numeral: "101011001101", value: 2765 }
+      ],
+      hex: [
+        { numeral: "5A", value: 90 },
+        { numeral: "2D6", value: 726 },
+        { numeral: "B04", value: 2820 },
+        { numeral: "D6B2", value: 54962 }
+      ]
+    };
+
+    const params = new URLSearchParams(location.search);
+    const language = params.get("lang") === "en" ? "en" : "fr";
+    const t = copy[language];
+    document.documentElement.lang = language;
+    document.title = t.pageTitle;
+
+    const state = {
+      mode: "binary",
+      index: { binary: 0, hex: 0 },
+      unlocked: { binary: 0, hex: 0 },
+      selected: new Set()
+    };
+
+    const elements = {
+      previous: document.querySelector("#previous"),
+      next: document.querySelector("#next"),
+      count: document.querySelector("#challenge-count"),
+      title: document.querySelector("#title"),
+      binaryMode: document.querySelector("#binary-mode"),
+      hexMode: document.querySelector("#hex-mode"),
+      modeSwitch: document.querySelector(".mode-switch"),
+      challengeLabel: document.querySelector("#challenge-label"),
+      numeral: document.querySelector("#numeral"),
+      instruction: document.querySelector("#instruction"),
+      positionTitle: document.querySelector("#position-title"),
+      positionScroll: document.querySelector("#position-scroll"),
+      expressionTitle: document.querySelector("#expression-title"),
+      expression: document.querySelector("#expression"),
+      totalLabel: document.querySelector("#total-label span"),
+      total: document.querySelector("#total"),
+      check: document.querySelector("#check"),
+      reset: document.querySelector("#reset"),
+      status: document.querySelector("#status"),
+      completion: document.querySelector("#completion")
+    };
+
+    function digitValue(symbol) {
+      return parseInt(symbol, 16);
+    }
+
+    function currentChallenge() {
+      return challenges[state.mode][state.index[state.mode]];
+    }
+
+    function setStatus(message, statusState = "") {
+      elements.status.textContent = message;
+      elements.status.dataset.state = statusState;
+    }
+
+    function selectedWeights() {
+      return [...state.selected].sort((a, b) => b - a);
+    }
+
+    function updateBinaryExpression() {
+      const weights = selectedWeights();
+      elements.expression.textContent = weights.length ? weights.join(" + ") : t.expressionEmpty;
+      elements.expression.classList.toggle("placeholder", weights.length === 0);
+    }
+
+    function updateHexExpression() {
+      const contributions = [...elements.positionScroll.querySelectorAll(".contribution")]
+        .map(input => input.value.trim())
+        .filter(Boolean);
+      elements.expression.textContent = contributions.length ? contributions.join(" + ") : t.hexExpressionEmpty;
+      elements.expression.classList.toggle("placeholder", contributions.length === 0);
+    }
+
+    function renderBinary(challenge) {
+      const digits = [...challenge.numeral];
+      const container = document.createElement("div");
+      container.className = "binary-positions";
+
+      digits.forEach((bit, displayIndex) => {
+        const exponent = digits.length - displayIndex - 1;
+        const weight = 2 ** exponent;
+        const cell = document.createElement("div");
+        cell.className = "position";
+
+        const power = document.createElement("span");
+        power.className = "power";
+        power.innerHTML = `2<sup>${exponent}</sup>`;
+
+        const bitNode = document.createElement("span");
+        bitNode.className = "bit";
+        bitNode.textContent = bit;
+
+        const weightNode = document.createElement("span");
+        weightNode.className = "weight";
+        weightNode.textContent = weight.toLocaleString(language === "fr" ? "fr-CA" : "en-CA");
+
+        const button = document.createElement("button");
+        button.className = "weight-button";
+        button.type = "button";
+        button.textContent = "+";
+        button.dataset.weight = String(weight);
+        button.setAttribute("aria-pressed", "false");
+        button.setAttribute("aria-label", `${t.position} ${exponent}, ${t.weight} ${weight}, ${t.notSelected}`);
+        button.addEventListener("click", () => {
+          const isSelected = state.selected.has(weight);
+          if (isSelected) state.selected.delete(weight); else state.selected.add(weight);
+          button.setAttribute("aria-pressed", String(!isSelected));
+          button.setAttribute("aria-label", `${t.position} ${exponent}, ${t.weight} ${weight}, ${!isSelected ? t.selected : t.notSelected}`);
+          updateBinaryExpression();
+        });
+
+        cell.append(power, bitNode, weightNode, button);
+        container.append(cell);
+      });
+
+      elements.positionScroll.replaceChildren(container);
+      updateBinaryExpression();
+    }
+
+    function renderHex(challenge) {
+      const digits = [...challenge.numeral];
+      const container = document.createElement("div");
+      container.className = "hex-positions";
+      container.style.setProperty("--columns", digits.length);
+
+      digits.forEach((symbol, displayIndex) => {
+        const exponent = digits.length - displayIndex - 1;
+        const cell = document.createElement("div");
+        cell.className = "hex-position";
+        cell.dataset.exponent = String(exponent);
+
+        const symbolNode = document.createElement("div");
+        symbolNode.className = "hex-symbol";
+        symbolNode.innerHTML = `${symbol}<span style="font-size:.55em; margin-left:5px; color:var(--muted)">&times; 16<sup>${exponent}</sup></span>`;
+
+        const fields = document.createElement("div");
+        fields.className = "hex-fields";
+
+        const coefficientLabel = document.createElement("label");
+        coefficientLabel.textContent = t.coefficient;
+        const coefficient = document.createElement("input");
+        coefficient.className = "coefficient";
+        coefficient.type = "number";
+        coefficient.inputMode = "numeric";
+        coefficient.autocomplete = "off";
+        coefficient.dataset.expected = String(digitValue(symbol));
+        coefficientLabel.append(coefficient);
+
+        const contributionLabel = document.createElement("label");
+        contributionLabel.textContent = t.contribution;
+        const contribution = document.createElement("input");
+        contribution.className = "contribution";
+        contribution.type = "number";
+        contribution.inputMode = "numeric";
+        contribution.autocomplete = "off";
+        contribution.dataset.expected = String(digitValue(symbol) * (16 ** exponent));
+        contribution.addEventListener("input", updateHexExpression);
+        contributionLabel.append(contribution);
+
+        fields.append(coefficientLabel, contributionLabel);
+        cell.append(symbolNode, fields);
+        container.append(cell);
+      });
+
+      elements.positionScroll.replaceChildren(container);
+      updateHexExpression();
+    }
+
+    function resetWork() {
+      state.selected.clear();
+      elements.total.value = "";
+      elements.completion.classList.remove("visible");
+      elements.completion.replaceChildren();
+      setStatus(state.mode === "binary" ? t.startBinary : t.startHex);
+      if (state.mode === "binary") renderBinary(currentChallenge()); else renderHex(currentChallenge());
+    }
+
+    function render() {
+      const list = challenges[state.mode];
+      const challenge = currentChallenge();
+      const index = state.index[state.mode];
+
+      elements.count.textContent = t.counter(index + 1, list.length);
+      elements.title.textContent = t.title;
+      elements.previous.title = t.previous;
+      elements.previous.setAttribute("aria-label", t.previous);
+      elements.next.title = t.next;
+      elements.next.setAttribute("aria-label", t.next);
+      elements.modeSwitch.setAttribute("aria-label", t.modeLabel);
+      elements.binaryMode.textContent = t.binary;
+      elements.hexMode.textContent = t.hex;
+      elements.binaryMode.setAttribute("aria-selected", String(state.mode === "binary"));
+      elements.hexMode.setAttribute("aria-selected", String(state.mode === "hex"));
+      elements.challengeLabel.textContent = t.challengeLabel;
+      elements.numeral.innerHTML = `${challenge.numeral}<sub>${state.mode === "binary" ? "2" : "16"}</sub>`;
+      elements.instruction.textContent = state.mode === "binary" ? t.binaryInstruction : t.hexInstruction;
+      elements.positionTitle.textContent = state.mode === "binary" ? t.binaryPositionTitle : t.hexPositionTitle;
+      elements.expressionTitle.textContent = t.expressionTitle;
+      elements.totalLabel.textContent = t.total;
+      elements.check.textContent = t.check;
+      elements.reset.textContent = t.reset;
+      elements.previous.disabled = index === 0;
+      elements.next.disabled = index >= list.length - 1 || index >= state.unlocked[state.mode];
+      resetWork();
+    }
+
+    function showCompletion(expression, value) {
+      elements.completion.innerHTML = `<strong>${t.completeLabel}</strong><br>${expression} = ${value.toLocaleString(language === "fr" ? "fr-CA" : "en-CA")}`;
+      elements.completion.classList.add("visible");
+    }
+
+    function checkBinary() {
+      const challenge = currentChallenge();
+      const digits = [...challenge.numeral];
+      const expected = new Set();
+      digits.forEach((bit, displayIndex) => {
+        if (bit === "1") expected.add(2 ** (digits.length - displayIndex - 1));
+      });
+
+      const missing = [...expected].filter(weight => !state.selected.has(weight));
+      const extra = [...state.selected].filter(weight => !expected.has(weight));
+      if (missing.length) return setStatus(t.missingBinary(missing.length), "wrong");
+      if (extra.length) return setStatus(t.extraBinary(extra.length), "wrong");
+      if (elements.total.value === "") return setStatus(t.totalMissing, "wrong");
+      if (Number(elements.total.value) !== challenge.value) return setStatus(t.totalWrong, "wrong");
+
+      const expression = [...expected].sort((a, b) => b - a).join(" + ");
+      completeChallenge(expression, challenge.value);
+    }
+
+    function checkHex() {
+      const challenge = currentChallenge();
+      const cells = [...elements.positionScroll.querySelectorAll(".hex-position")];
+      const anyIncomplete = cells.some(cell => !cell.querySelector(".coefficient").value || !cell.querySelector(".contribution").value);
+      if (anyIncomplete) return setStatus(t.hexIncomplete, "wrong");
+
+      for (const cell of cells) {
+        const exponent = cell.dataset.exponent;
+        const coefficient = cell.querySelector(".coefficient");
+        const contribution = cell.querySelector(".contribution");
+        if (Number(coefficient.value) !== Number(coefficient.dataset.expected)) return setStatus(t.hexValueWrong(exponent), "wrong");
+        if (Number(contribution.value) !== Number(contribution.dataset.expected)) return setStatus(t.hexContributionWrong(exponent), "wrong");
+      }
+
+      if (elements.total.value === "") return setStatus(t.totalMissing, "wrong");
+      if (Number(elements.total.value) !== challenge.value) return setStatus(t.totalWrong, "wrong");
+
+      const expression = cells.map(cell => {
+        const exponent = Number(cell.dataset.exponent);
+        const coefficient = cell.querySelector(".coefficient").value;
+        return `${coefficient} &times; ${16 ** exponent}`;
+      }).join(" + ");
+      completeChallenge(expression, challenge.value, true);
+    }
+
+    function completeChallenge(expression, value, containsHtml = false) {
+      setStatus(t.success, "right");
+      const index = state.index[state.mode];
+      state.unlocked[state.mode] = Math.max(state.unlocked[state.mode], Math.min(index + 1, challenges[state.mode].length - 1));
+      elements.next.disabled = index >= challenges[state.mode].length - 1;
+      if (containsHtml) {
+        elements.completion.innerHTML = `<strong>${t.completeLabel}</strong><br>${expression} = ${value.toLocaleString(language === "fr" ? "fr-CA" : "en-CA")}`;
+        elements.completion.classList.add("visible");
+      } else {
+        showCompletion(expression, value);
+      }
+    }
+
+    function setMode(mode) {
+      if (state.mode === mode) return;
+      state.mode = mode;
+      render();
+    }
+
+    elements.binaryMode.addEventListener("click", () => setMode("binary"));
+    elements.hexMode.addEventListener("click", () => setMode("hex"));
+    elements.previous.addEventListener("click", () => {
+      if (state.index[state.mode] > 0) {
+        state.index[state.mode] -= 1;
+        render();
+      }
+    });
+    elements.next.addEventListener("click", () => {
+      if (state.index[state.mode] < state.unlocked[state.mode] && state.index[state.mode] < challenges[state.mode].length - 1) {
+        state.index[state.mode] += 1;
+        render();
+      }
+    });
+    elements.reset.addEventListener("click", resetWork);
+    elements.check.addEventListener("click", () => state.mode === "binary" ? checkBinary() : checkHex());
+    elements.total.addEventListener("keydown", event => {
+      if (event.key === "Enter") elements.check.click();
+    });
+
+    window.addEventListener("message", event => {
+      if (event.data?.source !== "c12-course-site" || event.data?.type !== "theme") return;
+      document.documentElement.dataset.theme = event.data.scheme === "dark" ? "dark" : "light";
+    });
+
+    render();
+  </script>
+</body>
+</html>
